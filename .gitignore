@@ -1,0 +1,7 @@
+node_modules
+
+# mac files
+*.DS_Store
+
+# vim files
+*.sw?

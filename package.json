@@ -1,0 +1,28 @@
+{
+  "name": "yt-play",
+  "version": "0.0.0",
+  "description": "TODO",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yt-play"
+  ],
+  "author": "talmobi <talmo.christian@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/talmobi/yt-play"
+  },
+  "bugs": {
+    "url": "https://github.com/talmobi/yt-play/issues",
+    "email": "talmo.christian@gmail.com"
+  },
+  "dependencies": {
+    "electron": "1.8.4"
+  },
+  "devDependencies": {}
+}
