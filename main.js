@@ -67,7 +67,12 @@ ipcMain.on( 'video end', function ( evt, data ) {
 let mainWindow
 
 const philipGlassHoursVideoId = 'Wkof3nPK--Y'
+const shortVideoId = 'B7bqAsxee4I'
 const urlTemplate = 'https://www.youtube.com/watch/$videoId'
+
+const _videoId = process.argv.slice( 2 )[ 0 ] || philipGlassHoursVideoId
+
+console.log( 'playing video id: ' + _videoId )
 
 const funcs = {}
 
