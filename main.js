@@ -1,5 +1,28 @@
 const electron = require( 'electron' )
 
+const fs = require( 'fs' )
+const path = require( 'path' )
+const url = require( 'url' )
+
+const readline = require( 'readline' )
+
+const easyList = fs.readFileSync( './easylist.txt', 'utf8' ).split( '\n' )
+console.log( 'easyList length: ' + easyList.length )
+
+function containsAds ( url )
+{
+  url = String( url )
+
+  for ( let i = 0; i < easyList.length; i++ ) {
+    const item = easyList[ i ] || ''
+    if ( item.length > 3 && url.indexOf( item ) >= 0 ) {
+      return true
+    }
+  }
+
+  return false
+}
+
 // Module to control application life
 const app = electron.app
 
@@ -97,6 +120,34 @@ function createWindow () {
     width: 800,
     height: 600
   } )
+
+  const session = mainWindow.webContents.session
+
+  session.webRequest.onBeforeRequest(
+    [ '*://*./*' ], // all
+    function ( details, callback ) {
+      var url = details.url
+
+      const shouldBlock = (
+        containsAds( url )
+      )
+
+      if ( shouldBlock ) {
+        console.log( '-----------------------' )
+        let u = url
+        if ( u.length > 15 ) {
+          u = url.slice( 0, 5 ) + '...' + url.slice( -5 )
+        }
+        console.log( 'blocked ( advert ) url: ' + u )
+      }
+
+      if ( shouldBlock ) {
+        callback( { cancel: true } ) // block
+      } else {
+        callback( { cancel: false } ) // let through
+      }
+    }
+  )
 
   // mainWindow.webContents.executeJavaScript( 'alert("hello!")')
   // mainWindow.webContents.executeJavaScript( execFunc( 'playVideo' ) )
