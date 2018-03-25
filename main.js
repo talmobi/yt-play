@@ -45,8 +45,15 @@ ipcMain.on( 'video size', function ( evt, data ) {
   }
 } )
 
-ipcMain.on( 'video duration', function ( evt, data ) {
-  console.log( 'video duration: ' + data.currentTime + ' / ' + data.duration )
+ipcMain.on( 'video time', function ( evt, data ) {
+  const ct = data.currentTime | 0
+  const dur = data.duration | 0
+
+  readline.clearLine( process.stdout, 0 )
+  readline.cursorTo( process.stdout, 0 )
+  process.stdout.write(
+    'video time: ' + ct + ' / ' + dur + ' seconds'
+  )
 } )
 
 const path = require( 'path' )
