@@ -192,11 +192,11 @@ function createWindow ()
       }, 1000 )
     `)
 
-    setTimeout( function () {
-      console.log( 'pausing video' )
-      console.log( execFunc( 'pauseVideo' ) )
-      mainWindow.webContents.executeJavaScript( execFunc( 'pauseVideo' ) )
-    }, 40000 )
+    // setTimeout( function () {
+    //   console.log( 'pausing video' )
+    //   console.log( execFunc( 'pauseVideo' ) )
+    //   mainWindow.webContents.executeJavaScript( execFunc( 'pauseVideo' ) )
+    // }, 40000 )
   } )
 
   // and load the index.html of the app
