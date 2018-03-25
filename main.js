@@ -122,12 +122,14 @@ funcs.pauseVideo = function () {
   video.pause()
 }
 
-function execFunc ( name ) {
+function execFunc ( name )
+{
   const fnString = funcs[ name ].toString()
   return ( '(' + fnString + ')();' )
 }
 
-function createWindow () {
+function createWindow ()
+{
   // Create the browser window
   mainWindow = new BrowserWindow( {
     show: false,
