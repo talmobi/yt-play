@@ -41,7 +41,7 @@ ipcMain.on( 'video size', function ( evt, data ) {
     console.log( 'init video' )
 
     mainWindow.webContents.executeJavaScript( execFunc( 'initVideo' ) )
-    mainWindow.show()
+    // mainWindow.show()
   }
 } )
 
