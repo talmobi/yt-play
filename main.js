@@ -201,7 +201,7 @@ function createWindow ()
 
   // and load the index.html of the app
   mainWindow.loadURL(
-    urlTemplate.replace( '$videoId', philipGlassHoursVideoId )
+    urlTemplate.replace( '$videoId', _videoId )
 
     /*
       url.format( {
