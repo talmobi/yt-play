@@ -1,8 +1,16 @@
 {
   "name": "yt-play",
   "version": "0.0.0",
-  "description": "TODO",
-  "main": "main.js",
+  "description": "play youtube video id with electron",
+  "main": "bin/cli.js",
+  "bin": {
+    "yt-play": "bin/cli.js"
+  },
+  "files": [
+    "bin/cli.js",
+    "main.js",
+    "easylist.txt"
+  ],
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
