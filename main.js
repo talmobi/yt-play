@@ -180,6 +180,10 @@ function createWindow ()
         height: r.height
       } )
 
+      video.addEventListener( 'ended', function () {
+        ipcRenderer.send( 'video end' )
+      } )
+
       setInterval( function () {
         ipcRenderer.send( 'video time', {
           'currentTime': video.getCurrentTime(),
