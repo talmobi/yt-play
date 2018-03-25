@@ -56,8 +56,10 @@ ipcMain.on( 'video time', function ( evt, data ) {
   )
 } )
 
-const path = require( 'path' )
-const url = require( 'url' )
+ipcMain.on( 'video end', function ( evt, data ) {
+  console.log( 'video ended, quitting.' )
+  app.quit()
+} )
 
 // Keep a global ref of the window object, if you don't, the widow
 // will be closed automatically when the JavaScript object
