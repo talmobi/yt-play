@@ -189,7 +189,7 @@ function createWindow ()
           'currentTime': video.getCurrentTime(),
           'duration': video.getDuration()
         } )
-      }, 3000 )
+      }, 1000 )
     `)
 
     setTimeout( function () {
