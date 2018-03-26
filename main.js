@@ -6,7 +6,9 @@ const url = require( 'url' )
 
 const readline = require( 'readline' )
 
-const easyList = fs.readFileSync( './easylist.txt', 'utf8' ).split( '\n' )
+const easyList = fs.readFileSync(
+  path.join( __dirname, './easylist.txt' ), 'utf8'
+).split( '\n' )
 console.log( 'easyList length: ' + easyList.length )
 
 function containsAds ( url )
