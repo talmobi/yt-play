@@ -44,8 +44,9 @@ if ( videoId ) {
 
         // format the results nicer
         const text = (
-          song.title +
           ' (' + song.timestamp + ')' +
+          ' views: ' + song.views +
+          ' | ' + song.title +
           ' - ' + song.videoId
         )
 
