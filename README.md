@@ -20,17 +20,18 @@ yt-play
 ```
 
 # About
-Play youtube videos ( music only ) from the cli using electron.
-Use `yt-search` cli to search for videos to play.
+Play youtube videos ( music only ) from the CLI using [electron](https://github.com/electron/electron).
+
+Uses [yt-search](https://github.com/talmobi/yt-search) and [node-fzf](https://github.com/talmobi/node-fzf) to search for videos to play if no CLI videoId argument is provided.
 
 # Why
 To test/try/play around with electron.
 
 # How
-Using electron we simply go to the youtube page and play
+Using [electron](https://github.com/electron/electron) we simply go to the youtube page and play
 the video.. and attach some video event listeners and block ads.
 
-Leaving video id cli argument empty you will enter search and select mode using `yt-search` and `node-fzf`
+Leaving video id cli argument empty you will enter search and select mode using [yt-search](https://github.com/talmobi/yt-search) and [node-fzf](https://github.com/talmobi/node-fzf)
 
 # Arguments
 ```bash
