@@ -30,7 +30,9 @@
     "email": "talmo.christian@gmail.com"
   },
   "dependencies": {
-    "electron": "1.8.4"
+    "electron": "1.8.4",
+    "node-fzf": "0.0.5",
+    "yt-search": "~0.1.1"
   },
   "devDependencies": {}
 }
