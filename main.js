@@ -141,6 +141,27 @@ function createWindow ()
 
   const session = mainWindow.webContents.session
 
+    // const cookies = electron.session.defaultSession.cookies
+  const cookies = session.cookies
+
+  // https://electronjs.org/docs/api/cookies
+  // Query all cookies.
+  cookies.get( {}, function ( error, cookies ) {
+    console.log( error, cookies )
+  } )
+
+  // Query all cookies associated with a specific url.
+  cookies.get( { url: 'http://youtube.com' }, function ( error, cookies ) {
+    console.log( error, cookies )
+  } )
+
+  // Set a cookie with the given cookie data;
+  // may overwrite equivalent cookies if they exist.
+  const cookie = { url: 'https://www.youtube.com', name: 'CONSENT', value: 'YES+', domain: '.youtube.com' }
+  cookies.set( cookie, function ( error ) {
+    if ( error ) console.error( error )
+  } )
+
   session.webRequest.onBeforeRequest(
     [ '*://*./*' ], // all
     function ( details, callback ) {
