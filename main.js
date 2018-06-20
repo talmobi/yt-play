@@ -147,12 +147,12 @@ function createWindow ()
   // https://electronjs.org/docs/api/cookies
   // Query all cookies.
   cookies.get( {}, function ( error, cookies ) {
-    console.log( error, cookies )
+    // console.log( error, cookies )
   } )
 
   // Query all cookies associated with a specific url.
   cookies.get( { url: 'http://youtube.com' }, function ( error, cookies ) {
-    console.log( error, cookies )
+    // console.log( error, cookies )
   } )
 
   // Set a cookie with the given cookie data;
