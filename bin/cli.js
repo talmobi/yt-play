@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const _electron = require( 'electron' )
-const _childProcess = require( 'child_process' )
+const _electron = require( 'electron' ) // absolute path to electron binary
+const execa = require( 'execa' )
 
 const _path = require( 'path' )
 
@@ -16,8 +16,10 @@ const videoId = process.argv.slice( 2 )[ 0 ]
 
 function play ( videoId )
 {
-  console.log( 'playing video id: ' + videoId + '...' )
-  _childProcess.exec( _electron + ' ' + path + ' ' + videoId )
+  console.log( 'starting...' )
+  // _childProcess.exec( _electron + ' ' + path + ' ' + videoId )
+  execa( _electron, [ path, videoId ] )
+  .stdout.pipe( process.stdout )
 }
 
 if ( videoId ) {

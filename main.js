@@ -1,4 +1,6 @@
-const electron = require( 'electron' )
+// executed with electron binary
+
+const electron = require( 'electron' ) // electron module (not path to binary)
 
 const fs = require( 'fs' )
 const path = require( 'path' )
@@ -9,7 +11,14 @@ const readline = require( 'readline' )
 const easyList = fs.readFileSync(
   path.join( __dirname, './easylist.txt' ), 'utf8'
 ).split( '\n' )
-console.log( 'easyList length: ' + easyList.length )
+
+function log () {
+  if ( process.env.debug ) {
+    console.log.apply( this, arguments )
+  }
+}
+
+log( 'easyList length: ' + easyList.length )
 
 function containsAds ( url )
 {
@@ -25,6 +34,30 @@ function containsAds ( url )
   return false
 }
 
+function leftPad ( str, num, chr ) {
+  str = String( str )
+  num = num || 2
+  chr = chr || '0'
+  while ( str.length < num ) str = ( chr + str )
+  return str
+}
+
+function humanDuration ( seconds ) {
+  const h = Math.floor( seconds / ( 60 * 60 ) )
+  const m = Math.floor( ( ( seconds / 60 ) % 60 ) )
+  const s = seconds % 60
+
+  if ( h ) {
+    return (
+      h + ':' + leftPad( m ) + ':' + leftPad( s )
+    )
+  }
+
+  return (
+    m + ':' + leftPad( s )
+  )
+}
+
 // Module to control application life
 const app = electron.app
 
@@ -33,14 +66,14 @@ const BrowserWindow = electron.BrowserWindow
 
 const ipcMain = require( 'electron' ).ipcMain
 ipcMain.on( 'video size', function ( evt, data ) {
-  console.log( 'got video size:' )
-  console.log( data )
+  log( 'got video size:' )
+  log( data )
 
   if ( mainWindow ) {
     mainWindow.setSize( data.width, data.height, 0 )
     // mainWindow.setContentSize( data.width, data.height, 0 )
 
-    console.log( 'init video' )
+    log( 'init video' )
 
     mainWindow.webContents.executeJavaScript( execFunc( 'initVideo' ) )
     // mainWindow.show()
@@ -48,18 +81,22 @@ ipcMain.on( 'video size', function ( evt, data ) {
 } )
 
 ipcMain.on( 'video time', function ( evt, data ) {
+  log( evt )
+  log( data )
+
   const ct = data.currentTime | 0
   const dur = data.duration | 0
 
   readline.clearLine( process.stdout, 0 )
   readline.cursorTo( process.stdout, 0 )
+
   process.stdout.write(
-    'video time: ' + ct + ' / ' + dur + ' seconds'
+    'time: ' + humanDuration( ct ) + ' / ' + humanDuration( dur )
   )
 } )
 
 ipcMain.on( 'video end', function ( evt, data ) {
-  console.log( 'video ended, quitting.' )
+  log( 'video ended, quitting.' )
   app.quit()
 } )
 
@@ -91,7 +128,7 @@ funcs.initVideo = function ( width, height ) {
   const videos = document.querySelectorAll( 'video' )
   const video = videos[ 0 ]
 
-  console.log( 'hello' )
+  log( 'hello' )
 
   const els = document.querySelectorAll( 'div' )
   ;[].forEach.call( els, function ( el ) {
@@ -147,12 +184,12 @@ function createWindow ()
   // https://electronjs.org/docs/api/cookies
   // Query all cookies.
   cookies.get( {}, function ( error, cookies ) {
-    // console.log( error, cookies )
+    // log( error, cookies )
   } )
 
   // Query all cookies associated with a specific url.
   cookies.get( { url: 'http://youtube.com' }, function ( error, cookies ) {
-    // console.log( error, cookies )
+    // log( error, cookies )
   } )
 
   // Set a cookie with the given cookie data;
@@ -172,12 +209,12 @@ function createWindow ()
       )
 
       if ( shouldBlock ) {
-        console.log( '-----------------------' )
+        log( '-----------------------' )
         let u = url
         if ( u.length > 15 ) {
           u = url.slice( 0, 5 ) + '...' + url.slice( -5 )
         }
-        console.log( 'blocked ( advert ) url: ' + u )
+        log( 'blocked ( advert ) url: ' + u )
       }
 
       if ( shouldBlock ) {
@@ -216,8 +253,8 @@ function createWindow ()
     `)
 
     // setTimeout( function () {
-    //   console.log( 'pausing video' )
-    //   console.log( execFunc( 'pauseVideo' ) )
+    //   log( 'pausing video' )
+    //   log( execFunc( 'pauseVideo' ) )
     //   mainWindow.webContents.executeJavaScript( execFunc( 'pauseVideo' ) )
     // }, 40000 )
   } )
