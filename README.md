@@ -1,26 +1,27 @@
-[![npm](https://img.shields.io/npm/v/@talmobi/yt-play.svg?maxAge=3600&style=flat-square)](https://www.npmjs.com/package/@talmobi/yt-play)
-[![npm](https://img.shields.io/npm/l/@talmobi/yt-play.svg?maxAge=3600&style=flat-square)](https://github.com/talmobi/yt-play/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/yt-play-cli.svg?maxAge=3600)](https://www.npmjs.com/package/yt-play-cli)
+[![npm](https://img.shields.io/npm/dm/yt-play-cli.svg?maxAge=3600)](https://www.npmjs.com/package/yt-play-cli)
+[![npm](https://img.shields.io/npm/l/yt-play-cli.svg?maxAge=3600)](https://www.npmjs.com/package/yt-play-cli)
 
-#  @talmobi/yt-play
-play youtube videos (sound only) in the terminal using electron
+#  yt-play-cli
+play youtube videos ( sound only ) in the terminal using electron
 
 ![](https://thumbs.gfycat.com/OrnateWeirdCollie-size_restricted.gif)
 
 ## Simple to use
 ```bash
-npm install -g @talmobi/yt-play
+npm install -g yt-play-cli
 
-# play known video id directly
-yt-play rnQBF2CIygg
+# enter interactive search and select mode
+yt-play
 ```
 
 or
 
 ```bash
-npm install -g @talmobi/yt-play
+npm install -g yt-play-cli
 
-# enter interactive search and select mode
-yt-play
+# play known video id directly
+yt-play rnQBF2CIygg
 ```
 
 ## About
@@ -45,7 +46,7 @@ If no video id is provided you will enter interactive search and select mode.
 
 ## Installation
 ```bash
-npm install -g @talmobi/yt-play
+npm install -g yt-play-cli
 ```
 
 ## Test
