@@ -1,7 +1,7 @@
 {
-  "name": "@talmobi/yt-play",
+  "name": "yt-play-cli",
   "version": "0.0.6",
-  "description": "play youtube video id with electron",
+  "description": "play youtube videos with electron",
   "main": "bin/cli.js",
   "bin": {
     "yt-play": "bin/cli.js"
