@@ -32,7 +32,7 @@
   "dependencies": {
     "electron": "~1.8.8",
     "execa": "~1.0.0",
-    "node-fzf": "0.0.5",
+    "node-fzf": "~0.1.2",
     "yt-search": "~0.2.0"
   },
   "devDependencies": {}

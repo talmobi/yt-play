@@ -8,6 +8,7 @@ const _path = require( 'path' )
 const _ytSearch = require( 'yt-search' )
 const _nfzf = require( 'node-fzf' )
 
+
 // const _clc = require( 'cli-color' )
 
 let path = _path.join( __dirname, '../main.js' )
@@ -55,7 +56,12 @@ if ( videoId ) {
         list.push( text )
       }
 
-      _nfzf( list, function ( val, ind ) {
+      _nfzf( list, function ( r ) {
+        if ( !r.selected ) return console.log( 'nothing selected' )
+
+        const val = r.selected.val
+        const ind = r.selected.index
+
         console.log( val )
 
         const song = videos[ ind ]
