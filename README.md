@@ -5,7 +5,7 @@
 #  yt-play-cli
 play youtube videos ( sound only ) in the terminal using electron
 
-![](https://thumbs.gfycat.com/OrnateWeirdCollie-size_restricted.gif)
+![](https://i.imgur.com/lWLScr9.gif)
 
 ## Simple to use
 ```bash
