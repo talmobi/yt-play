@@ -1,6 +1,6 @@
 {
   "name": "yt-play-cli",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "play youtube videos with electron",
   "main": "bin/cli.js",
   "bin": {
