@@ -194,6 +194,8 @@ function createWindow ()
 
   // Set a cookie with the given cookie data;
   // may overwrite equivalent cookies if they exist.
+  // we set these cookies to prevent "consent dialogs" from
+  // popping up
   const cookie = { url: 'https://www.youtube.com', name: 'CONSENT', value: 'YES+', domain: '.youtube.com' }
   cookies.set( cookie, function ( error ) {
     if ( error ) console.error( error )
