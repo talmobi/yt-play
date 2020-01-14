@@ -1,42 +1,32 @@
 #!/usr/bin/env node
 
-const _electron = require( 'electron' ) // absolute path to electron binary
-const execa = require( 'execa' )
-
 const _path = require( 'path' )
 
-const _ytSearch = require( 'yt-search' )
+const _yts = require( 'yt-search' )
 const _nfzf = require( 'node-fzf' )
 
+const ytp = require( '../src/main.js' )
 
-// const _clc = require( 'cli-color' )
-
-let path = _path.join( __dirname, '../main.js' )
+ytp.init()
 
 const videoId = process.argv.slice( 2 )[ 0 ]
 
 function play ( videoId )
 {
-  console.log( 'starting...' )
-  // _childProcess.exec( _electron + ' ' + path + ' ' + videoId )
-  execa( _electron, [ path, videoId ] )
-  .stdout.pipe( process.stdout )
+  ytp.play( videoId )
 }
 
 if ( videoId ) {
   play( videoId )
 } else {
-  process.stdout.write( 'search youtube: ' )
+  // ask user for a search time first and allow them to select a
+  // video to play
+  _nfzf.getInput( 'YouTube search: ', function ( r ) {
+    const search = r.query.trim()
 
-  let buffer = ''
-  process.stdin.resume()
-  process.stdin.setEncoding( 'utf8' )
+    console.log( 'searching : ' + search )
 
-  function search ( chunk ) {
-    process.stdin.removeListener( 'data', search )
-
-    console.log( 'searching... ' + chunk )
-    _ytSearch( chunk, function ( err, r ) {
+    _yts( search, function ( err, r ) {
       if ( err ) throw err
 
       const list = []
@@ -58,24 +48,19 @@ if ( videoId ) {
 
       _nfzf( list, function ( r ) {
         if ( !r.selected ) return console.log( 'nothing selected' )
-
-        const val = r.selected.val
+        const val = r.selected.value
         const ind = r.selected.index
 
-        console.log( val )
-
         const song = videos[ ind ]
-        const url = (
-          'https://youtube.com' + song.url
-        )
-        console.log( url )
+
+        console.log( 'playing   : ' + song.videoId )
+        console.log( 'url       : ' + song.url )
 
         console.log( ' ------------------ ' )
+        console.log( song.title )
 
         play( song.videoId )
       } )
     } )
-  }
-
-  process.stdin.on( 'data', search )
+  } )
 }
