@@ -6,6 +6,17 @@ const nz = nozombie()
 const philipGlassHoursVideoId = 'Wkof3nPK--Y' // testing
 const urlTemplate = 'https://www.youtube.com/watch/$videoId'
 
+const envs = {}
+Object.keys( process.env ).forEach(
+  function ( key ) {
+    const n = process.env[ key ]
+    if ( n == '0' || n == 'false' || !n ) {
+      return envs[ key ] = false
+    }
+    envs[ key ] = n
+  }
+)
+
 const api = {}
 module.exports = api
 
@@ -174,7 +185,6 @@ function humanDuration ( seconds )
 
 function debug ( ...args )
 {
-  const n = process.env.debug
-  if ( n == '0' || n == 'false' || !n ) return
+  if ( !envs.debug ) return
   console.log.apply( this, args )
 }
