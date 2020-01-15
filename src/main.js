@@ -73,6 +73,7 @@ ee.on( 'play', async function ( videoId ) {
     await page.goto(
       urlTemplate.replace( '$videoId', videoId )
     )
+    debug( 'page loaded' )
 
     // wait video to load on the page before playing
     await page.waitFor( function () {
@@ -80,6 +81,7 @@ ee.on( 'play', async function ( videoId ) {
       const topVideo = videos[ 0 ]
       return ( topVideo && topVideo.getCurrentTime() >= 0 )
     } )
+    debug( 'video loaded' )
 
     await page.evaluate( function () {
       const videos = document.querySelectorAll( 'video' )
@@ -89,6 +91,7 @@ ee.on( 'play', async function ( videoId ) {
 
       topVideo.play()
     } )
+    debug( 'playing video' )
 
     tick()
     // print video current time and duration periodically
