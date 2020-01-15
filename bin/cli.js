@@ -22,6 +22,11 @@ if ( videoId ) {
   // ask user for a search time first and allow them to select a
   // video to play
   _nfzf.getInput( 'YouTube search: ', function ( r ) {
+    if ( !r.query ) {
+      console.log( 'exit' )
+      process.exit( 1 )
+    }
+
     const search = r.query.trim()
 
     console.log( 'searching : ' + search )
