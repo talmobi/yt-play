@@ -129,14 +129,14 @@ async function init ()
   page.on( 'request', function ( req ) {
     if ( req.resourceType() === 'image' ) {
       // block images
-      // console.log( 'image blocked' )
+      debug( 'image blocked' )
       return req.abort()
     }
 
     const url = req.url()
-
     if ( containsAds( url ) ) {
-      // console.log( 'ad blocked' )
+      // block ads
+      debug( 'ad blocked' )
       return req.abort()
     }
 
