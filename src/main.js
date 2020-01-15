@@ -103,9 +103,8 @@ ee.on( 'play', async function ( videoId ) {
       clearTimeout( _tick_timeout )
       setTimeout( tick, 1000 )
     }
-
   } else {
-    console.log( 'page was not ready' )
+    debug( 'page was not ready' )
   }
 } )
 
@@ -171,4 +170,11 @@ function humanDuration ( seconds )
   return (
     m + ':' + leftPad( s )
   )
+}
+
+function debug ( ...args )
+{
+  const n = process.env.debug
+  if ( n == '0' || n == 'false' || !n ) return
+  console.log.apply( this, args )
 }
