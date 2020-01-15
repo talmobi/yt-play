@@ -136,8 +136,8 @@ async function init ()
 
   const opts = {
     pipe: true,
-    headless: false,
-    slowMo: 250
+    headless: !envs.debug,
+    slowMo: envs.debug ? 250 : undefined
   }
 
   browser = await puppeteer.launch( opts )
