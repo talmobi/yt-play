@@ -135,6 +135,7 @@ async function init ()
   init.init = true
 
   const opts = {
+    ignoreDefaultArgs: [ '--mute-audio' ],
     pipe: true,
     headless: !envs.debug,
     slowMo: envs.debug ? 250 : undefined
