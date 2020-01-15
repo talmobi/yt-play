@@ -74,6 +74,13 @@ ee.on( 'play', async function ( videoId ) {
       urlTemplate.replace( '$videoId', videoId )
     )
 
+    // wait video to load on the page before playing
+    await page.waitFor( function () {
+      const videos = document.querySelectorAll( 'video' )
+      const topVideo = videos[ 0 ]
+      return ( topVideo && topVideo.getCurrentTime() >= 0 )
+    } )
+
     await page.evaluate( function () {
       const videos = document.querySelectorAll( 'video' )
 
