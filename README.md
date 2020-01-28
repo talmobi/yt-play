@@ -3,7 +3,11 @@
 [![npm](https://img.shields.io/npm/l/yt-play-cli.svg?maxAge=3600)](https://www.npmjs.com/package/yt-play-cli)
 
 #  yt-play-cli
-play youtube videos ( sound only ) in the terminal using electron
+play youtube videos ( sound only ) in the terminal using
+available Chrome installation or downloads automatically a
+h264/AAC enabled Chromium version from woolyss ( because some
+YouTube video's require h264/AAC support and Chromium by
+default does not include those codecs )
 
 ![](https://i.imgur.com/lWLScr9.gif)
 
