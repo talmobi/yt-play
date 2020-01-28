@@ -1,4 +1,4 @@
-const puppeteer = require( 'puppeteer' )
+const puppeteer = require( 'puppeteer-core' )
 const nozombie = require( 'nozombie' )
 
 const chromeFinder = require( 'chrome-finder' )
