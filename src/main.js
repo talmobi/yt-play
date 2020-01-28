@@ -31,14 +31,16 @@ const clc = require( 'cli-color' )
 // used to block ad urls
 const easyList = fs.readFileSync(
   path.join( __dirname, '../easylist.txt' ), 'utf8'
-).split( '\n' )
+).split( '\n' ).map( function ( t ) {
+  return t.replace( /[\r\n]/g, '' )
+} )
 
 function containsAds ( url )
 {
   url = String( url )
 
   for ( let i = 0; i < easyList.length; i++ ) {
-    const item = easyList[ i ] || ''
+    const item = ( easyList[ i ] || '' ).trim()
     if ( item.length > 3 && url.indexOf( item ) >= 0 ) {
       return true
     }
