@@ -1,7 +1,7 @@
 const puppeteer = require( 'puppeteer-core' )
 const nozombie = require( 'nozombie' )
 
-const chromeFinder = require( 'chrome-finder' )
+const chromeOrChromiumExecPath = require( 'chrome-or-chromium-all-codecs-bin' )()
 
 const nz = nozombie()
 
@@ -165,16 +165,7 @@ async function init ()
 
   // try to use Chrome instead if it exists (has inbuilt support
   // for licensed h264 codec that some youtube videos need)
-  try {
-    const chromePath = chromeFinder()
-    // console.log( 'chrome path: ' + chromePath )
-    if ( chromePath ) {
-      opts.executablePath = chromePath
-    }
-  } catch ( err ) {
-    /* chrome not found */
-    console.log( 'chrome not found, using chromium' )
-  }
+  opts.executablePath = chromeOrChromiumExecPath
 
   browser = await puppeteer.launch( opts )
   nz.add( browser.process().pid )
