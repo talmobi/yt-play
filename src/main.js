@@ -114,11 +114,16 @@ ee.on( 'play', async function ( videoId ) {
         // the video we should play
         const topVideo = videos[ 0 ]
 
+        if ( !topVideo ) return undefined
+
         return {
           currentTime: topVideo.getCurrentTime(),
           duration: topVideo.getDuration()
         }
       } )
+
+      // page no longer has a video on it
+      if ( !data ) return clearTimeout( _tick_timeout )
 
       const ct = data.currentTime | 0
       const dur = data.duration | 0
