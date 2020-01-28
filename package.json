@@ -30,9 +30,8 @@
     "email": "talmo.christian@gmail.com"
   },
   "dependencies": {
-    "chrome-finder": "~1.0.6",
+    "chrome-or-chromium-all-codecs-bin": "~0.0.1",
     "cli-color": "~2.0.0",
-    "execa": "~4.0.0",
     "node-fzf": "~0.5.1",
     "nozombie": "~0.6.0",
     "puppeteer-core": "~2.1.0",
