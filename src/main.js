@@ -1,6 +1,8 @@
 const puppeteer = require( 'puppeteer' )
 const nozombie = require( 'nozombie' )
 
+const chromeFinder = require( 'chrome-finder' )
+
 const nz = nozombie()
 
 const philipGlassHoursVideoId = 'Wkof3nPK--Y' // testing
@@ -139,6 +141,19 @@ async function init ()
     pipe: true,
     headless: !envs.debug,
     slowMo: envs.debug ? 250 : undefined
+  }
+
+  // try to use Chrome instead if it exists (has inbuilt support
+  // for licensed h264 codec that some youtube videos need)
+  try {
+    const chromePath = chromeFinder()
+    console.log( 'chrome path: ' + chromePath )
+    if ( chromePath ) {
+      opts.executablePath = chromePath
+    }
+  } catch ( err ) {
+    console.log( err )
+    /* chrome not found */
   }
 
   browser = await puppeteer.launch( opts )
