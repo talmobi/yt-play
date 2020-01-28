@@ -165,13 +165,13 @@ async function init ()
   // for licensed h264 codec that some youtube videos need)
   try {
     const chromePath = chromeFinder()
-    console.log( 'chrome path: ' + chromePath )
+    // console.log( 'chrome path: ' + chromePath )
     if ( chromePath ) {
       opts.executablePath = chromePath
     }
   } catch ( err ) {
-    console.log( err )
     /* chrome not found */
+    console.log( 'chrome not found, using chromium' )
   }
 
   browser = await puppeteer.launch( opts )
