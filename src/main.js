@@ -69,6 +69,14 @@ api.play = async function play ( videoId ) {
   ee.emit( 'play', videoId )
 }
 
+ee.on( 'video:end', async function () {
+  const t = setTimeout( process.exit, 3000 )
+
+  await browser.close()
+  clearTimeout( t )
+  process.exit( 0 )
+} )
+
 let _tick_timeout
 ee.on( 'play', async function ( videoId ) {
   if ( page ) {
@@ -123,8 +131,13 @@ ee.on( 'play', async function ( videoId ) {
         ' / ' + humanDuration( dur )
       )
 
-      clearTimeout( _tick_timeout )
-      setTimeout( tick, 1000 )
+      if ( ct >= dur && dur > 0 ) {
+        // stop playing
+        ee.emit( 'video:end' )
+      } else {
+        clearTimeout( _tick_timeout )
+        setTimeout( tick, 1000 )
+      }
     }
   } else {
     debug( 'page was not ready' )
