@@ -182,16 +182,17 @@ async function init ()
 
   await page.setRequestInterception( true )
   page.on( 'request', function ( req ) {
+    const url = req.url()
+
     if ( req.resourceType() === 'image' ) {
       // block images
-      debug( 'image blocked' )
+      debug( 'image blocked: ' + mini( url ) )
       return req.abort()
     }
 
-    const url = req.url()
     if ( containsAds( url ) ) {
       // block ads
-      debug( 'ad blocked' )
+      debug( 'ad blocked: ' + mini( url ) )
       return req.abort()
     }
 
@@ -231,4 +232,10 @@ function debug ( ...args )
 {
   if ( !envs.debug ) return
   console.log.apply( this, args )
+}
+
+function mini ( str )
+{
+  if ( str.length > 30 ) return str.slice( 0, 30 ) + '...'
+  return str
 }
