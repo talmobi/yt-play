@@ -178,7 +178,26 @@ async function init ()
     ignoreDefaultArgs: [ '--mute-audio' ],
     pipe: true,
     headless: !envs.debug,
-    slowMo: envs.debug ? 250 : undefined
+    slowMo: envs.debug ? 250 : undefined,
+    // userDataDir: './myUserDataDir',
+    // dumpio: true,
+    args: [
+      // '--type=renderer',
+      // '--use-fake-codec-for-peer-connection',
+      // '--disable-breakpad',
+      // '--disable-features=MacV2Sandbox',
+      '--lang=en-US',
+      '--disable-extensions',
+      // '--disable-zero-copy',
+      // '--disable-gpu-memory-buffer-compositor-resource',
+      // '--disable-gpu-rasterization',
+      '--incognito',
+      // '--no-sandbox',
+      // '--mem-pressure-system-reserved-kb=1024',
+      // '--shader-disk-cache-size-kb=50024024'
+      // '--enable-logging',
+      // '--v=6',
+    ]
   }
 
   // use Chromium with h264/AAC codecs enabled
