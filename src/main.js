@@ -1,7 +1,10 @@
 const puppeteer = require( 'puppeteer-core' )
 const nozombie = require( 'nozombie' )
 
-const chromeOrChromiumExecPath = require( 'chrome-or-chromium-all-codecs-bin' )()
+const execPath = require( 'chromium-all-codecs-bin' )()
+// const execPath = require( 'chrome-or-chromium-all-codecs-bin' )()
+// const execPath = '/Users/mollie/Downloads/Chromium\ 10.app/Contents/MacOS/Chromium'
+// const execPath = '/Users/mollie/Downloads/Chromium\ 2.app/Contents/MacOS/Chromium'
 
 const nz = nozombie()
 
@@ -163,9 +166,8 @@ async function init ()
     slowMo: envs.debug ? 250 : undefined
   }
 
-  // try to use Chrome instead if it exists (has inbuilt support
-  // for licensed h264 codec that some youtube videos need)
-  opts.executablePath = chromeOrChromiumExecPath
+  // use Chromium with h264/AAC codecs enabled
+  opts.executablePath = execPath
 
   browser = await puppeteer.launch( opts )
   nz.add( browser.process().pid )
