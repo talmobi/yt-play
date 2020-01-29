@@ -206,10 +206,16 @@ async function init ()
   browser = await puppeteer.launch( opts )
   nz.add( browser.process().pid )
 
+  // use existing page
   const pages = await browser.pages()
   page = pages[ 0 ]
 
+  // page = await browser.newPage()
+
   await page.setRequestInterception( true )
+
+  // console.log( page )
+
   page.on( 'request', function ( req ) {
     const url = req.url()
 
