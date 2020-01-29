@@ -75,6 +75,7 @@ api.play = async function play ( videoId ) {
 }
 
 ee.on( 'video:end', async function () {
+  debug( 'video:end' )
   const t = setTimeout( process.exit, 3000 )
 
   await browser.close()
@@ -111,6 +112,8 @@ ee.on( 'play', async function ( videoId ) {
     tick()
     // print video current time and duration periodically
     async function tick () {
+      debug( ' === tick === ' )
+
       const data = await page.evaluate( function () {
         console.log( ' === tick === ' )
 
