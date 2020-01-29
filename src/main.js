@@ -222,6 +222,8 @@ async function init ()
     debug( err )
   } )
 
+  page.setUserAgent( 'Mozilla/5.0' )
+
   await page.setRequestInterception( true )
 
   // console.log( page )
