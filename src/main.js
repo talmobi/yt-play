@@ -95,7 +95,7 @@ ee.on( 'play', async function ( videoId ) {
     await page.waitFor( function () {
       const videos = document.querySelectorAll( 'video' )
       const topVideo = videos[ 0 ]
-      return ( topVideo && topVideo.getCurrentTime() >= 0 )
+      return ( topVideo && topVideo.currentTime >= 0 && topVideo.duration > 0 )
     } )
     debug( 'video loaded' )
 
@@ -108,6 +108,9 @@ ee.on( 'play', async function ( videoId ) {
       topVideo.play()
     } )
     debug( 'playing video' )
+
+    // last time
+    let lt = 0
 
     tick()
     // print video current time and duration periodically
@@ -144,7 +147,16 @@ ee.on( 'play', async function ( videoId ) {
         ' / ' + humanDuration( dur )
       )
 
-      if ( ct >= dur && dur > 0 ) {
+      if ( ct >= lt ) {
+        lt = ct
+      }
+
+      const videoHasEnded = (
+        ( ct >= dur && dur > 0 ) ||
+        ( ct < lt ) // currentTime has reset somehow ( maybe video autoplay )
+      )
+
+      if ( videoHasEnded ) {
         // stop playing
         ee.emit( 'video:end' )
       } else {
