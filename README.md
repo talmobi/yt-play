@@ -37,8 +37,11 @@ Uses [yt-search](https://github.com/talmobi/yt-search) and [node-fzf](https://gi
 To test/try/play around with electron.
 
 ## How
-Using [electron](https://github.com/electron/electron) we simply go to the youtube page and play
+Using [puppeteer-core](https://github.com/puppeteer/puppeteer) we simply go to the youtube page and play
 the video.. and attach some video event listeners and block ads.
+
+~~Using [electron](https://github.com/electron/electron) we simply go to the youtube page and play~~
+~~the video.. and attach some video event listeners and block ads.~~
 
 Leaving video id cli argument empty you will enter search and select mode using [yt-search](https://github.com/talmobi/yt-search) and [node-fzf](https://github.com/talmobi/node-fzf)
 

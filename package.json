@@ -1,7 +1,7 @@
 {
   "name": "yt-play-cli",
   "version": "0.5.0",
-  "description": "play youtube videos with electron",
+  "description": "play youtube videos with a headless browser",
   "main": "bin/cli.js",
   "bin": {
     "yt-play": "bin/cli.js"
