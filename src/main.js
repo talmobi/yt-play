@@ -212,6 +212,16 @@ async function init ()
 
   // page = await browser.newPage()
 
+  page.on( 'error', async function ( err ) {
+    debug( ' === error === ' )
+    debug( err )
+  } )
+
+  page.on( 'pageerror', async function ( err ) {
+    debug( ' === pageerror === ' )
+    debug( err )
+  } )
+
   await page.setRequestInterception( true )
 
   // console.log( page )
