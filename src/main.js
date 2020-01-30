@@ -96,6 +96,7 @@ ee.once( 'page-ready', function () {
 } )
 
 api.play = async function play ( videoId ) {
+  init()
   playlist.push( videoId )
   ee.emit( 'play', videoId )
 }

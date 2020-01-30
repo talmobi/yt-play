@@ -7,8 +7,6 @@ const _nfzf = require( 'node-fzf' )
 
 const ytp = require( '../src/main.js' )
 
-ytp.init()
-
 const videoId = process.argv.slice( 2 )[ 0 ]
 
 function play ( videoId )
