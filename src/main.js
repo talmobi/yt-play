@@ -227,10 +227,8 @@ async function init ()
   // uglier to look at)
   page.setUserAgent( 'Mozilla/5.0' )
 
+  // enable in order to block images and ads from loading
   await page.setRequestInterception( true )
-
-  // console.log( page )
-
   page.on( 'request', function ( req ) {
     const url = req.url()
 
