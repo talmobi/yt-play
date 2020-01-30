@@ -65,6 +65,29 @@ api.init = init
 
 const playlist = []
 
+api.exit = async function exit () {
+  // make sure browser process is dead
+  const t = setTimeout( function () {
+    nz.kill()
+    finish()
+  }, 3000 )
+
+  await browser.close()
+  clearTimeout( t )
+
+  finish()
+  function finish () {
+    if ( finish.done ) return
+    finish.done = true
+
+    init.init = false
+    browser = undefined
+    page = undefined
+
+    api.emit( 'end' )
+  }
+}
+
 ee.once( 'page-ready', function () {
   if ( playlist.length > 0 ) {
     const videoId = playlist.shift()
