@@ -21,6 +21,10 @@ function play ( videoId )
 if ( videoId ) {
   play( videoId )
 } else {
+  ask()
+}
+
+function ask () {
   // ask user for a search time first and allow them to select a
   // video to play
   _nfzf.getInput( 'YouTube search: ', function ( r ) {
@@ -67,6 +71,9 @@ if ( videoId ) {
         console.log( song.title )
 
         play( song.videoId )
+
+        // ask again once current video has stopped playing
+        ytp.once( 'end', ask)
       } )
     } )
   } )
