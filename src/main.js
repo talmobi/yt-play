@@ -222,6 +222,9 @@ async function init ()
     debug( err )
   } )
 
+  // get pages compatible with the oldest browsers
+  // they tend to be simpler and easier to parse (although
+  // uglier to look at)
   page.setUserAgent( 'Mozilla/5.0' )
 
   await page.setRequestInterception( true )
