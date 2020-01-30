@@ -9,6 +9,10 @@ const ytp = require( '../src/main.js' )
 
 const videoId = process.argv.slice( 2 )[ 0 ]
 
+process.on( 'exit', function () {
+  ytp.exit()
+} )
+
 function play ( videoId )
 {
   ytp.play( videoId )
