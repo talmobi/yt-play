@@ -76,17 +76,15 @@ function ask () {
 
         play( song.videoId )
 
-        ytp.on( 'duration', function onDuration ( evt ) {
+        ytp.on( 'duration', onDuration )
+        ytp.once( 'end', function () {
+          ytp.off( 'duration', onDuration )
+        } )
+        function onDuration ( evt ) {
           process.stdout.write( _clc.erase.line )
           process.stdout.write( _clc.move( -process.stdout.columns ) )
-
           process.stdout.write( evt.text )
-
-          // attach self exit handler for duration
-          ytp.once( 'end', function () {
-            ytp.off( 'duration', onDuration )
-          } )
-        } )
+        }
 
         // ask again once current video has stopped playing
         ytp.once( 'end', ask )
