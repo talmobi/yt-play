@@ -22,9 +22,6 @@ Object.keys( process.env ).forEach(
   }
 )
 
-const api = {}
-module.exports = api
-
 const fs = require( 'fs' )
 const path = require( 'path' )
 
@@ -53,11 +50,17 @@ function containsAds ( url )
 }
 
 const events = require( 'events' )
+// internal events
 const ee = new events.EventEmitter()
+
+// user events
+const api = new events.EventEmitter()
+module.exports = api
 
 // these will be initialized by main()
 let browser, page
 
+// allow pre-init
 api.init = init
 
 const playlist = []
