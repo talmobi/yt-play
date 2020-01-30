@@ -7,6 +7,9 @@ const _nfzf = require( 'node-fzf' )
 
 const ytp = require( '../src/main.js' )
 
+// print video duration
+const _clc = require( 'cli-color' )
+
 const videoId = process.argv.slice( 2 )[ 0 ]
 
 process.on( 'exit', function () {
@@ -73,8 +76,20 @@ function ask () {
 
         play( song.videoId )
 
+        ytp.on( 'duration', function onDuration ( evt ) {
+          process.stdout.write( _clc.erase.line )
+          process.stdout.write( _clc.move( -process.stdout.columns ) )
+
+          process.stdout.write( evt.text )
+
+          // attach self exit handler for duration
+          ytp.once( 'end', function () {
+            ytp.off( 'duration', onDuration )
+          } )
+        } )
+
         // ask again once current video has stopped playing
-        ytp.once( 'end', ask)
+        ytp.once( 'end', ask )
       } )
     } )
   } )

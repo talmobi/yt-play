@@ -25,9 +25,6 @@ Object.keys( process.env ).forEach(
 const fs = require( 'fs' )
 const path = require( 'path' )
 
-// print video duration
-const clc = require( 'cli-color' )
-
 // used to block ad urls
 const easyList = fs.readFileSync(
   path.join( __dirname, '../easylist.txt' ), 'utf8'
@@ -182,13 +179,14 @@ ee.on( 'play', async function ( videoId ) {
       const ct = data.currentTime | 0
       const dur = data.duration | 0
 
-      process.stdout.write( clc.erase.line )
-      process.stdout.write( clc.move( -process.stdout.columns ) )
-
-      process.stdout.write(
-        'time: ' + humanDuration( ct ) +
-        ' / ' + humanDuration( dur )
-      )
+      api.emit( 'duration', {
+        currentTime: ct,
+        duration: dur,
+        text: (
+          'time: ' + humanDuration( ct ) +
+          ' / ' + humanDuration( dur )
+        )
+      } )
 
       if ( ct >= lt ) {
         lt = ct
