@@ -182,10 +182,7 @@ ee.on( 'play', async function ( videoId ) {
       api.emit( 'duration', {
         currentTime: ct,
         duration: dur,
-        text: (
-          'time: ' + humanDuration( ct ) +
-          ' / ' + humanDuration( dur )
-        )
+        text: humanDuration( ct ) +' / ' + humanDuration( dur )
       } )
 
       if ( ct >= lt ) {
