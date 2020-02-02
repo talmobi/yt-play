@@ -30,7 +30,7 @@
     "email": "talmo.christian@gmail.com"
   },
   "dependencies": {
-    "chromium-all-codecs-bin": "0.0.2",
+    "chromium-all-codecs-bin": "0.0.3",
     "cli-color": "~2.0.0",
     "node-fzf": "~0.5.2",
     "nozombie": "~0.6.0",
