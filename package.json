@@ -30,11 +30,10 @@
     "email": "talmo.christian@gmail.com"
   },
   "dependencies": {
-    "chromium-all-codecs-bin": "~0.0.3",
     "cli-color": "~2.0.0",
+    "electron": "~7.1.11",
     "node-fzf": "~0.5.2",
     "nozombie": "~0.6.0",
-    "puppeteer-core": "~1.7.0",
     "yt-search": "~1.1.2"
   },
   "devDependencies": {}
