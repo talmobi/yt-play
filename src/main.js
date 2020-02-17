@@ -106,6 +106,7 @@ ee.on( 'video:end', async function () {
 let _tick_timeout
 ee.on( 'play', async function ( videoId ) {
   debug( ' === ON PLAY === ' )
+  debug( 'videoId: ' + videoId )
 
   const page = _page
 
