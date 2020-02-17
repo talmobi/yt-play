@@ -122,8 +122,10 @@ ee.on( 'play', async function ( videoId ) {
       const video = document.querySelector( 'video' )
       if ( video ) {
         video.pause()
-        video._play = video.play
-        video.play = function () {}
+        if ( !video._play ) {
+          video._play = video.play
+          video.play = function () {}
+        }
       }
       return ( video && video.currentTime >= 0 && video.duration > 0 )
     } )
