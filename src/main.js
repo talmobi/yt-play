@@ -290,9 +290,3 @@ function debug ( ...args )
   if ( !_envs.debug ) return
   console.log.apply( this, args )
 }
-
-function mini ( str )
-{
-  if ( str.length > 30 ) return str.slice( 0, 30 ) + '...'
-  return str
-}
