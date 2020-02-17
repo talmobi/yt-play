@@ -127,7 +127,12 @@ ee.on( 'play', async function ( videoId ) {
           video.play = function () {}
         }
       }
-      return ( video && video.currentTime >= 0 && video.duration > 0 )
+
+      return (
+        video &&
+        video.currentTime >= 0 && video.duration > 0 &&
+        video.readyState === 4
+      )
     } )
     debug( 'video loaded' )
 
