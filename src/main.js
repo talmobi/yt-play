@@ -43,12 +43,13 @@ function containsAds ( url )
   return false
 }
 
-const events = require( 'events' )
+const eeto = require( 'eeto' ) // event emitter
+
 // internal events
-const ee = new events.EventEmitter()
+const ee = eeto()
 
 // user events
-const api = new events.EventEmitter()
+const api = eeto()
 module.exports = api
 
 // these will be initialized by main()
