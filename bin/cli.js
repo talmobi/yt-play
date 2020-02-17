@@ -12,6 +12,10 @@ const _clc = require( 'cli-color' )
 
 const videoId = process.argv.slice( 2 )[ 0 ]
 
+process.on( 'SIGINT', function () {
+  ytp.exit()
+  process.exit()
+} )
 process.on( 'exit', function () {
   ytp.exit()
 } )
