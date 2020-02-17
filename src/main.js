@@ -100,27 +100,7 @@ api.play = async function play ( videoId ) {
 
 ee.on( 'video:end', async function () {
   debug( 'video:end' )
-
-  // make sure browser process is dead
-  const t = setTimeout( function () {
-    nz.kill()
-    finish()
-  }, 3000 )
-
-  await browser.close()
-  clearTimeout( t )
-
-  finish()
-  function finish () {
-    if ( finish.done ) return
-    finish.done = true
-
-    init.init = false
-    browser = undefined
-    page = undefined
-
-    api.emit( 'end' )
-  }
+  api.exit()
 } )
 
 let _tick_timeout
