@@ -132,6 +132,8 @@ ee.on( 'play', async function ( videoId ) {
     await page.waitFor( function () {
       return ( document.title.toLowerCase() !== 'youtube' )
     } )
+
+    debug( 'playing video...' )
     await page.evaluate( function () {
       const video = document.querySelector( 'video' )
 
@@ -143,7 +145,6 @@ ee.on( 'play', async function ( videoId ) {
 
       topVideo.play()
     } )
-    debug( 'playing video' )
 
     // last time
     let lt = 0
