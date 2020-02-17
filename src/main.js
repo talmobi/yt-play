@@ -118,14 +118,21 @@ ee.on( 'play', async function ( videoId ) {
 
     // wait video to load on the page before playing
     await page.waitFor( function () {
-      const videos = document.querySelectorAll( 'video' )
-      const topVideo = videos[ 0 ]
-      return ( topVideo && topVideo.currentTime >= 0 && topVideo.duration > 0 )
+      const video = document.querySelector( 'video' )
+      if ( video ) {
+        video.pause()
+        video._play = video.play
+        video.play = function () {}
+      }
+      return ( video && video.currentTime >= 0 && video.duration > 0 )
     } )
     debug( 'video loaded' )
 
     await page.evaluate( function () {
-      const videos = document.querySelectorAll( 'video' )
+      const video = document.querySelector( 'video' )
+
+      console.log( ' == video play == ' )
+      console.log( video.play )
 
       // the video we should play
       const topVideo = videos[ 0 ]
@@ -145,10 +152,7 @@ ee.on( 'play', async function ( videoId ) {
       const data = await page.evaluate( function () {
         console.log( ' === tick === ' )
 
-        const videos = document.querySelectorAll( 'video' )
-
-        // the video we should play
-        const topVideo = videos[ 0 ]
+        const topVideo = document.querySelector( 'video' )
 
         if ( !topVideo ) return undefined
 
