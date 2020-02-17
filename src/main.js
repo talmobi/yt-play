@@ -53,7 +53,8 @@ const api = eeto()
 module.exports = api
 
 // these will be initialized by main()
-let browser, page
+let _browser = undefined
+let _page = undefined
 
 // allow pre-init
 api.init = init
@@ -123,6 +124,8 @@ ee.on( 'video:end', async function () {
 
 let _tick_timeout
 ee.on( 'play', async function ( videoId ) {
+  const page = _page
+
   if ( page ) {
     await page.goto(
       urlTemplate.replace( '$videoId', videoId )
@@ -284,6 +287,8 @@ async function init ()
     req.continue()
   } )
 
+  _browser = browser
+  _page = page
   ee.emit( 'page-ready' )
 }
 
