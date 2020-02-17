@@ -1,10 +1,6 @@
-const puppeteer = require( 'puppeteer-core' )
+// const puppeteer = require( 'puppeteer-core' )
+const eleko = require( 'eleko' )
 const nozombie = require( 'nozombie' )
-
-const execPath = require( 'chromium-all-codecs-bin' )()
-// const execPath = require( 'chrome-or-chromium-all-codecs-bin' )()
-// const execPath = '/Users/mollie/Downloads/Chromium\ 10.app/Contents/MacOS/Chromium'
-// const execPath = '/Users/mollie/Downloads/Chromium\ 2.app/Contents/MacOS/Chromium'
 
 const nz = nozombie()
 
