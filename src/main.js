@@ -227,9 +227,11 @@ async function init ()
   debug( page )
 
   // get pages compatible with the oldest browsers
-  // they tend to be simpler and easier to parse (although
-  // uglier to look at)
-  page.setUserAgent( 'Mozilla/5.0' )
+  // they tend to be simplest and lightest to run with
+  // primitive/ugly ui elements
+  debug( 'set user-agent...' )
+  await page.setUserAgent( 'Mozilla/5.0 (https://github.com/talmobi/yt-play)' )
+  debug( 'user-agent' )
 
   // block ads and images
   page.on( 'request', function ( req ) {
