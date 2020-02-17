@@ -143,7 +143,7 @@ ee.on( 'play', async function ( videoId ) {
       console.log( ' == video _play == ' )
       console.log( video._play )
 
-      topVideo.play()
+      video._play()
     } )
 
     // last time
