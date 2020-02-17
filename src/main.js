@@ -208,76 +208,47 @@ async function init ()
   if ( init.init ) return
   init.init = true
 
-  const opts = {
-    ignoreDefaultArgs: [ '--mute-audio' ],
-    pipe: true,
-    headless: !envs.debug,
-    slowMo: envs.debug ? 250 : undefined,
-    // userDataDir: './myUserDataDir',
-    // dumpio: true,
-    args: [
-      // '--type=renderer',
-      // '--use-fake-codec-for-peer-connection',
-      // '--disable-breakpad',
-      // '--disable-features=MacV2Sandbox',
-      '--lang=en-US',
-      '--disable-extensions',
-      // '--disable-zero-copy',
-      // '--disable-gpu-memory-buffer-compositor-resource',
-      // '--disable-gpu-rasterization',
-      '--incognito',
-      // '--no-sandbox',
-      // '--mem-pressure-system-reserved-kb=1024',
-      // '--shader-disk-cache-size-kb=50024024'
-      // '--enable-logging',
-      // '--v=6',
-    ]
-  }
+  const browser = await eleko.launch()
+  nz.add( browser.spawn.pid )
 
-  // use Chromium with h264/AAC codecs enabled
-  opts.executablePath = execPath
-
-  browser = await puppeteer.launch( opts )
-  nz.add( browser.process().pid )
-
-  // use existing page
-  const pages = await browser.pages()
-  page = pages[ 0 ]
-
-  // page = await browser.newPage()
-
-  page.on( 'error', async function ( err ) {
-    debug( ' === error === ' )
-    debug( err )
+  browser.on( 'error', async function ( err ) {
+    throw err
   } )
 
-  page.on( 'pageerror', async function ( err ) {
-    debug( ' === pageerror === ' )
-    debug( err )
+  browser.on( 'exit', async function ( code ) {
+    debug( 'browser exited, code: ' + code )
+    process.exit( code )
   } )
+
+  debug( 'creating new page...' )
+  const page = await browser.newPage()
+  debug( 'new page created' )
+
+  debug( page )
 
   // get pages compatible with the oldest browsers
   // they tend to be simpler and easier to parse (although
   // uglier to look at)
   page.setUserAgent( 'Mozilla/5.0' )
 
-  // enable in order to block images and ads from loading
-  await page.setRequestInterception( true )
+  // block ads and images
   page.on( 'request', function ( req ) {
-    const url = req.url()
+    const url = req.url
+    const resourceType = req.resourceType
 
-    if ( req.resourceType() === 'image' ) {
+    if ( resourceType === 'image' ) {
       // block images
-      debug( 'image blocked: ' + mini( url ) )
+      debug( 'image blocked: ' + url.slice( 0, 55 ) )
       return req.abort()
     }
 
     if ( containsAds( url ) ) {
       // block ads
-      debug( 'ad blocked: ' + mini( url ) )
+      debug( 'ad blocked: ' + url.slice( 0, 55 ) )
       return req.abort()
     }
 
+    debug( 'url passed: ' + url.slice( 0, 55 ) )
     req.continue()
   } )
 
