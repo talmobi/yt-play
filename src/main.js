@@ -69,7 +69,7 @@ api.exit = async function exit () {
   }, 3000 )
 
   const browser = _browser
-  await browser.close()
+  if ( browser ) await browser.close()
   clearTimeout( t )
   finish()
 
