@@ -68,23 +68,24 @@ api.exit = async function exit () {
     finish()
   }, 3000 )
 
+  const browser = _browser
   await browser.close()
   clearTimeout( t )
-
   finish()
+
   function finish () {
     if ( finish.done ) return
     finish.done = true
 
     init.init = false
-    browser = undefined
-    page = undefined
 
     api.emit( 'end' )
   }
 }
 
 ee.once( 'page-ready', function () {
+  debug( ' === PAGE READY === ' )
+
   if ( playlist.length > 0 ) {
     const videoId = playlist.shift()
     ee.emit( 'play', videoId )
@@ -124,6 +125,8 @@ ee.on( 'video:end', async function () {
 
 let _tick_timeout
 ee.on( 'play', async function ( videoId ) {
+  debug( ' === ON PLAY === ' )
+
   const page = _page
 
   if ( page ) {
