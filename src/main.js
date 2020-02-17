@@ -149,6 +149,7 @@ ee.on( 'play', async function ( videoId ) {
     // last time
     let lt = 0
 
+    debug( 'ticking...' )
     tick()
     // print video current time and duration periodically
     async function tick () {
