@@ -110,9 +110,10 @@ ee.on( 'play', async function ( videoId ) {
   const page = _page
 
   if ( page ) {
-    await page.goto(
-      urlTemplate.replace( '$videoId', videoId )
-    )
+    const url = urlTemplate.replace( '$videoId', videoId )
+
+    await page.goto( url )
+
     debug( 'page loaded' )
 
     // wait video to load on the page before playing
