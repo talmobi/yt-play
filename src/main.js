@@ -140,8 +140,8 @@ ee.on( 'play', async function ( videoId ) {
       console.log( ' == video play == ' )
       console.log( video.play )
 
-      // the video we should play
-      const topVideo = videos[ 0 ]
+      console.log( ' == video _play == ' )
+      console.log( video._play )
 
       topVideo.play()
     } )
