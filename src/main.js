@@ -4,6 +4,9 @@ const nozombie = require( 'nozombie' )
 
 const nz = nozombie()
 
+const abjs = require( 'ad-block-js' )
+const adBlockClient = abjs.create()
+
 const philipGlassHoursVideoId = 'Wkof3nPK--Y' // testing
 const urlTemplate = 'https://www.youtube.com/watch/$videoId'
 
@@ -29,18 +32,16 @@ const easyList = fs.readFileSync(
   return t.replace( /[\r\n]/g, '' )
 } )
 
+for ( let i = 0; i < easyList.length; i++ ) {
+  const rule = ( easyList[ i ] || '' ).trim()
+  if ( rule ) {
+    adBlockClient.add( rule )
+  }
+}
+
 function containsAds ( url )
 {
-  url = String( url )
-
-  for ( let i = 0; i < easyList.length; i++ ) {
-    const item = ( easyList[ i ] || '' ).trim()
-    if ( item.length > 3 && url.indexOf( item ) >= 0 ) {
-      return true
-    }
-  }
-
-  return false
+  return adBlockClient.matches( url )
 }
 
 const eeto = require( 'eeto' ) // event emitter
