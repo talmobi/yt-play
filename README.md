@@ -3,11 +3,7 @@
 [![npm](https://img.shields.io/npm/l/yt-play-cli.svg?maxAge=3600)](https://www.npmjs.com/package/yt-play-cli)
 
 #  yt-play-cli
-play youtube videos ( sound only ) in the terminal using
-available Chrome installation or downloads automatically a
-h264/AAC enabled Chromium version from woolyss ( because some
-YouTube video's require h264/AAC support and Chromium by
-default does not include those codecs )
+play youtube videos ( sound only ) in the terminal using electron (and its bundled chromium)
 
 ![](https://i.imgur.com/lWLScr9.gif)
 
@@ -37,10 +33,14 @@ Uses [yt-search](https://github.com/talmobi/yt-search) and [node-fzf](https://gi
 To test/try/play around with electron.
 
 ## How
-Using [puppeteer-core](https://github.com/puppeteer/puppeteer) we simply go to the youtube page and play
+Using [electron](https://github.com/electron/electron) we simply go to the youtube page and play
 the video.. and attach some video event listeners and block ads.
 
-~~Using [electron](https://github.com/electron/electron) we simply go to the youtube page and play~~
+The reason we use electron instead of puppeteer is because the chromium version that comes bundled
+with electron can play more media types (e.g. h264 that some YouTube video's are encoded in) that
+the chromium version that puppeteer comes with can't play.
+
+~~Using [puppeteer-core](https://github.com/puppeteer/puppeteer) we simply go to the youtube page and play~~
 ~~the video.. and attach some video event listeners and block ads.~~
 
 Leaving video id cli argument empty you will enter search and select mode using [yt-search](https://github.com/talmobi/yt-search) and [node-fzf](https://github.com/talmobi/node-fzf)
