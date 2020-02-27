@@ -1,6 +1,6 @@
 {
   "name": "yt-play-cli",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "play youtube videos with a headless browser",
   "main": "bin/cli.js",
   "bin": {
