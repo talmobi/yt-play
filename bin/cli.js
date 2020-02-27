@@ -80,9 +80,9 @@ function ask () {
 
         play( song.videoId )
 
-        ytp.on( 'duration', onDuration )
+        const off = ytp.on( 'duration', onDuration )
         ytp.once( 'end', function () {
-          ytp.off( 'duration', onDuration )
+          off()
         } )
         function onDuration ( evt ) {
           process.stdout.write( _clc.erase.line )
