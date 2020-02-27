@@ -37,8 +37,8 @@ Using [electron](https://github.com/electron/electron) we simply go to the youtu
 the video.. and attach some video event listeners and block ads.
 
 The reason we use electron instead of puppeteer is because the chromium version that comes bundled
-with electron can play more media types (e.g. h264 that some YouTube video's are encoded in) that
-the chromium version that puppeteer comes with can't play.
+with electron can play more media types ( e.g. h264 that some YouTube video's are encoded in ) that
+the chromium version that puppeteer comes with can't play ( e.g. https://www.youtube.com/watch?v=pFbkURxNKPE )
 
 ~~Using [puppeteer-core](https://github.com/puppeteer/puppeteer) we simply go to the youtube page and play~~
 ~~the video.. and attach some video event listeners and block ads.~~
