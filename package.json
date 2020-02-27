@@ -38,5 +38,8 @@
     "nozombie": "~0.7.0",
     "yt-search": "~1.1.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "robotjs": "~0.6.0",
+    "tape": "~4.13.0"
+  }
 }
