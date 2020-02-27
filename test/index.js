@@ -95,7 +95,7 @@ test( 'search and play youtube video', function ( t ) {
     robotjs.typeString( 'overseer never' )
     await sleep( 300 )
     robotjs.keyTap( 'enter' )
-    await sleep( 2000 )
+    await sleep( 3000 )
     robotjs.keyTap( 'enter' )
   }
 
