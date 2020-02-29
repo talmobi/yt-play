@@ -134,7 +134,7 @@ ee.on( 'play', async function ( videoId ) {
 
       return (
         video &&
-        video.currentTime >= 0 && video.duration > 0 &&
+        // video.currentTime >= 0 && video.duration >= 0 &&
         video.readyState === 4
       )
     } )
