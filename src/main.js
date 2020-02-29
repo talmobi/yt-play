@@ -102,16 +102,15 @@ api.play = async function play ( videoId ) {
 
 ee.on( 'video:end', async function () {
   debug( 'video:end' )
-  api.exit()
 } )
 
 let _tick_timeout
 ee.on( 'play', async function ( videoId ) {
+  clearTimeout( _tick_timeout )
   debug( ' === ON PLAY === ' )
   debug( 'videoId: ' + videoId )
 
   const page = _page
-
   if ( page ) {
     const url = urlTemplate.replace( '$videoId', videoId )
 
