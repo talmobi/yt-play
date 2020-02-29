@@ -205,6 +205,13 @@ ee.on( 'play', async function ( videoId ) {
 
       if ( videoHasEnded ) {
         // stop playing
+        await page.evaluate( function () {
+          const topVideo = document.querySelector( 'video' )
+          if ( !topVideo ) return undefined
+
+          topVideo.pause()
+        } )
+
         ee.emit( 'video:end' )
       } else {
         clearTimeout( _tick_timeout )
