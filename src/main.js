@@ -61,6 +61,7 @@ let _page = undefined
 api.init = init
 
 const playlist = []
+let playasap = undefined
 
 api.exit = async function exit () {
   // make sure browser process is dead
@@ -87,15 +88,15 @@ api.exit = async function exit () {
 ee.once( 'page-ready', function () {
   debug( ' === PAGE READY === ' )
 
-  if ( playlist.length > 0 ) {
-    const videoId = playlist.shift()
+  if ( playasap ) {
+    const videoId = playasap
     ee.emit( 'play', videoId )
   }
 } )
 
 api.play = async function play ( videoId ) {
   init()
-  playlist.push( videoId )
+  playasap = videoId
   ee.emit( 'play', videoId )
 }
 
