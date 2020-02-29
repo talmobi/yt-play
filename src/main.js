@@ -141,9 +141,9 @@ ee.on( 'play', async function ( videoId ) {
     debug( 'video loaded' )
 
     // wait for page title to have loaded to the video title
-    await page.waitFor( function () {
-      return ( document.title.toLowerCase() !== 'youtube' )
-    } )
+    // await page.waitFor( function () {
+    //   return ( document.title.toLowerCase() !== 'youtube' )
+    // } )
 
     debug( 'playing video...' )
     await page.evaluate( function () {
