@@ -120,9 +120,12 @@ ee.on( 'play', async function ( videoId ) {
 
     // wait video to load on the page before playing
     await page.waitFor( function () {
+      console.log( 'waiting for video' )
+
       const video = document.querySelector( 'video' )
       if ( video ) {
         video.pause()
+
         if ( !video._play ) {
           video._play = video.play
           video.play = function () {}
@@ -144,6 +147,8 @@ ee.on( 'play', async function ( videoId ) {
 
     debug( 'playing video...' )
     await page.evaluate( function () {
+      console.log( 'playign video' )
+
       const video = document.querySelector( 'video' )
 
       console.log( ' == video play == ' )
