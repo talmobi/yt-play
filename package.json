@@ -31,9 +31,9 @@
   "dependencies": {
     "ad-block-js": "0.0.1",
     "cli-color": "~2.0.0",
-    "eeto": "0.0.1",
     "electron": "~7.1.11",
     "eleko": "~0.1.0",
+    "eeto": "0.0.4",
     "node-fzf": "~0.5.3",
     "nozombie": "~0.7.0",
     "yt-search": "~1.1.2"
