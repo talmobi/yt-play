@@ -102,6 +102,7 @@ api.play = async function play ( videoId ) {
 
 ee.on( 'video:end', async function () {
   debug( 'video:end' )
+  api.emit( 'end' )
 } )
 
 let _tick_timeout
