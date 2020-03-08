@@ -10,7 +10,11 @@ const ytp = require( '../src/main.js' )
 // print video duration
 const _clc = require( 'cli-color' )
 
-const videoId = process.argv.slice( 2 )[ 0 ]
+const argv = require( 'minimist' )( process.argv.slice( 2 ) )
+
+const videoId = argv.v || argv.video || argv._[ 0 ]
+
+const askAgain = argv.c || argv.continue
 
 process.on( 'SIGINT', function () {
   ytp.exit()

@@ -34,6 +34,7 @@
     "electron": "~7.1.11",
     "eleko": "~0.1.0",
     "eeto": "0.0.4",
+    "minimist": "~1.2.0",
     "node-fzf": "~0.5.3",
     "nozombie": "~0.7.0",
     "yt-search": "~1.1.2"
