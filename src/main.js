@@ -2,8 +2,6 @@
 const eleko = require( 'eleko' )
 const nozombie = require( 'nozombie' )
 
-const nz = nozombie()
-
 const abjs = require( 'ad-block-js' )
 const adBlockClient = abjs.create()
 
@@ -64,12 +62,6 @@ const playlist = []
 let playasap = undefined
 
 api.exit = async function exit () {
-  // make sure browser process is dead
-  const t = setTimeout( function () {
-    nz.kill()
-    finish()
-  }, 3000 )
-
   const browser = _browser
   if ( browser ) await browser.close()
   clearTimeout( t )
@@ -229,7 +221,6 @@ async function init ()
   init.init = true
 
   const browser = await eleko.launch()
-  nz.add( browser.spawn.pid )
 
   browser.on( 'error', async function ( err ) {
     throw err
