@@ -307,6 +307,6 @@ function humanDuration ( seconds )
 
 function debug ( ...args )
 {
-  if ( !_envs.debug ) return
+  if ( !_envs.debug_yt_play ) return
   console.log.apply( this, args )
 }
