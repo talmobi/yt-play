@@ -95,7 +95,15 @@ function ask () {
         }
 
         // ask again once current video has stopped playing
-        ytp.once( 'end', ask )
+        ytp.once( 'end', function onEnd () {
+          if ( askAgain ) {
+            ask()
+          } else {
+            // exit
+            ytp.exit()
+            process.exit()
+          }
+        } )
       } )
     } )
   } )
