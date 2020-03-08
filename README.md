@@ -70,4 +70,8 @@ npm install -g yt-play-cli
 ```
 
 ## Test
-No tests..
+Searches and plays a youtube video using the CLI
+
+```
+npm test
+```
