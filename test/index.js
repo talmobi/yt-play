@@ -93,9 +93,10 @@ test( 'search and play youtube video', function ( t ) {
 
   async function run () {
     robotjs.typeString( 'overseer never' )
-    await sleep( 300 )
+    await sleep( 1000 )
     robotjs.keyTap( 'enter' )
-    await sleep( 3000 )
+    await sleep( 4000 )
+    robotjs.keyTap( 'enter' )
     robotjs.keyTap( 'enter' )
   }
 
