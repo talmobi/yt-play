@@ -241,8 +241,12 @@ async function init ()
   // they tend to be simplest and lightest to run with
   // primitive/ugly ui elements
   debug( 'set user-agent...' )
-  await page.setUserAgent( 'Mozilla/5.0 (https://github.com/talmobi/yt-play)' )
-  debug( 'user-agent' )
+  // the '(Googlebot)' string is added because YouTube will show
+  // a warning notification that we are using an "old browser" if
+  // it can't detect the "Googlebot" string in the user-agent
+  await page.setUserAgent( 'Mozilla/5.0 (https://github.com/talmobi/yt-play) (Googlebot)' )
+
+  debug( 'user-agent: ' + ( await page.getUserAgent() ) )
 
   // block ads and images
   page.on( 'request', function ( req ) {
