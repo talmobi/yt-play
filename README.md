@@ -24,6 +24,19 @@ npm install -g yt-play-cli
 yt-play rnQBF2CIygg
 ```
 
+## Node API
+```
+const ytp = require( 'yt-play-cli' )
+ytp.play( 'Wkof3nPK--Y' )
+ytp.on( 'duration', function ( time ) {
+    console.log( time.text )
+} )
+
+ytp.once( 'end', function () {
+    process.exit()
+} )
+```
+
 ## About
 Play youtube videos ( music only ) from the CLI using [electron](https://github.com/electron/electron).
 
