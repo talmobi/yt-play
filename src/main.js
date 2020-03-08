@@ -173,7 +173,6 @@ ee.on( 'play', async function ( videoId ) {
         console.log( ' === tick === ' )
 
         const topVideo = document.querySelector( 'video' )
-
         if ( !topVideo ) return undefined
 
         return {
@@ -182,7 +181,7 @@ ee.on( 'play', async function ( videoId ) {
         }
       } )
 
-      // page no longer has a video on it
+      // page no longer has a video on it for some reason
       if ( !data ) return clearTimeout( _tick_timeout )
 
       const ct = data.currentTime | 0
@@ -200,16 +199,15 @@ ee.on( 'play', async function ( videoId ) {
 
       const videoHasEnded = (
         ( ct >= dur && dur > 0 ) ||
-        ( ct < lt ) // currentTime has reset somehow ( maybe video autoplay )
+        ( ct < lt ) // currentTime has gone backwards somehow ( maybe next video autoplay )
       )
 
       if ( videoHasEnded ) {
         // stop playing
         await page.evaluate( function () {
-          const topVideo = document.querySelector( 'video' )
-          if ( !topVideo ) return undefined
-
-          topVideo.pause()
+          const video = document.querySelector( 'video' )
+          if ( !video ) return undefined
+          video.pause()
         } )
 
         ee.emit( 'video:end' )
