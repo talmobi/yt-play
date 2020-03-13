@@ -82,13 +82,13 @@ ee.once( 'page-ready', function () {
 
   if ( playasap ) {
     const videoId = playasap
+    playasap = undefined
     ee.emit( 'play', videoId )
   }
 } )
 
 api.play = async function play ( videoId ) {
   init()
-  playasap = videoId
   ee.emit( 'play', videoId )
 }
 
