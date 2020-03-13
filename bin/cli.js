@@ -68,7 +68,6 @@ function ask () {
         list.push( text )
       }
 
-      ytp.init()
       _nfzf( list, function ( r ) {
         if ( !r.selected ) return console.log( 'nothing selected' )
         const val = r.selected.value
