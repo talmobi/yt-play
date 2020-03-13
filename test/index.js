@@ -39,6 +39,7 @@ test( 'search and play youtube video', function ( t ) {
   function onData ( chunk ) {
     buffer += chunk.toString( 'utf8' )
 
+    t.comment( 'step: ' + step )
     switch ( step ) {
       case 'searching':
         if ( buffer.toLowerCase().indexOf( 'youtube search' ) >= 0 ) {
