@@ -97,6 +97,8 @@ test( 'search and play youtube video', function ( t ) {
     await sleep( 1000 )
     robotjs.keyTap( 'enter' )
     await sleep( 4000 )
+    robotjs.typeString( 'wy6sr6' )
+    await sleep( 1000 )
     robotjs.keyTap( 'enter' )
     robotjs.keyTap( 'enter' )
   }
