@@ -211,6 +211,7 @@ ee.on( 'play', async function ( videoId ) {
     }
   } else {
     debug( 'page was not ready' )
+    playasap = videoId // play immediately when page is ready
   }
 } )
 
