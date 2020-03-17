@@ -13,7 +13,17 @@ const _clc = require( 'cli-color' )
 
 const argv = require( 'minimist' )( process.argv.slice( 2 ) )
 
-const videoId = argv.v || argv.video || argv._[ 0 ]
+let videoId = argv.v || argv.video
+let searchAndPlay = argv.s || argv.search
+
+const _ = argv._.join( ' ' ).trim()
+searchAndPlay = searchAndPlay || _
+
+if ( searchAndPlay ) {
+  searchAndPlay = searchAndPlay.trim()
+}
+
+// const search = argv.
 
 const askAgain = argv.c || argv.continue
 
@@ -50,7 +60,47 @@ function play ( videoId )
 }
 
 if ( videoId ) {
+  console.log( 'play video id: ' + searchAndPlay )
   play( videoId )
+} else if ( searchAndPlay ) {
+  console.log( 'search and play: ' + searchAndPlay )
+  _yts( searchAndPlay, function ( err, r ) {
+    if ( err ) throw err
+
+    const list = []
+    const videos = r.videos
+
+    const song = videos[ 0 ]
+
+    console.log( 'playing   : ' + song.videoId )
+    console.log( 'url       : ' + song.url )
+
+    console.log( ' ------------------ ' )
+    console.log( song.title )
+
+    play( song.videoId )
+
+    const off = ytp.on( 'duration', onDuration )
+    ytp.once( 'end', function () {
+      off()
+    } )
+    function onDuration ( evt ) {
+      process.stdout.write( _clc.erase.line )
+      process.stdout.write( _clc.move( -process.stdout.columns ) )
+      process.stdout.write( evt.text )
+    }
+
+    // ask again once current video has stopped playing
+    ytp.once( 'end', function onEnd () {
+      if ( askAgain ) {
+        ask()
+      } else {
+        // exit
+        ytp.exit()
+        process.exit()
+      }
+    } )
+  } )
 } else {
   ask()
 }
