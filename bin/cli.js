@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const _path = require( 'path' )
+const _fs = require( 'fs' )
 
 const _yts = require( 'yt-search' )
 const _nfzf = require( 'node-fzf' )
@@ -15,6 +16,25 @@ const argv = require( 'minimist' )( process.argv.slice( 2 ) )
 const videoId = argv.v || argv.video || argv._[ 0 ]
 
 const askAgain = argv.c || argv.continue
+
+const lockPath = _path.join( __dirname, '.yt-play-cli-lock' )
+_fs.writeFileSync( lockPath, process.pid, { encoding: 'utf8' } )
+
+checkLock()
+function checkLock () {
+  setTimeout( function () {
+    try {
+      const lock = _fs.readFileSync( lockPath, { encoding: 'utf8' } )
+      if ( lock != process.pid ) {
+        return process.exit( 10 ) // another yt-play-cli process has been started
+      }
+
+      checkLock()
+    } catch ( err ) {
+      process.exit( 99 )
+    }
+  }, 1000 )
+}
 
 process.on( 'SIGINT', function () {
   ytp.exit()
