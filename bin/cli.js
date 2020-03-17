@@ -60,7 +60,7 @@ function play ( videoId )
 }
 
 if ( videoId ) {
-  console.log( 'play video id: ' + searchAndPlay )
+  console.log( 'play video id: ' + videoId )
   play( videoId )
 } else if ( searchAndPlay ) {
   console.log( 'search and play: ' + searchAndPlay )
