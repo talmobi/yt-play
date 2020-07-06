@@ -37,7 +37,7 @@
     "minimist": "~1.2.0",
     "node-fzf": "~0.6.1",
     "nozombie": "~0.7.0",
-    "yt-search": "~2.0.1"
+    "yt-search": "~2.1.1"
   },
   "devDependencies": {
     "robotjs": "~0.6.0",
