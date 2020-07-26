@@ -122,7 +122,27 @@ function ask () {
       if ( err ) throw err
 
       const list = []
-      const videos = r.videos
+      let videos = r.videos
+
+      const orderedVideos = []
+      const lowViewVideos = []
+
+      for ( let i = 0; i < videos.length; i++ ) {
+        const video = videos[ i ]
+        if ( video.views < 5 ) {
+          lowViewVideos.push( video )
+        } else {
+          orderedVideos.push( video )
+        }
+      }
+
+      // append the low viewed videos at the end
+      for ( let i = 0; i < lowViewVideos.length; i++ ) {
+        const video = lowViewVideos[ i ]
+        orderedVideos.push( video )
+      }
+
+      videos = orderedVideos
 
       for ( let i = 0; i < videos.length; i++ ) {
         const song = videos[ i ]
