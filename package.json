@@ -32,12 +32,12 @@
     "ad-block-js": "0.0.2",
     "cli-color": "~2.0.0",
     "eeto": "0.0.4",
-    "electron": "~9.2.1",
-    "eleko": "~0.4.0",
+    "electron": "~10.1.0",
+    "eleko": "~0.5.0",
     "minimist": "~1.2.5",
     "node-fzf": "~0.8.0",
-    "nozombie": "~0.7.0",
-    "yt-search": "~2.2.2"
+    "nozombie": "~1.0.1",
+    "yt-search": "~2.2.4"
   },
   "devDependencies": {
     "robotjs": "~0.6.0",
