@@ -150,7 +150,7 @@ ee.on( 'play', async function ( videoId ) {
 
     debug( 'playing video...' )
     await page.evaluate( function () {
-      console.log( 'playign video' )
+      console.log( 'playing video' )
 
       const video = document.querySelector( 'video' )
 
