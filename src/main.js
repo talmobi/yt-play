@@ -116,8 +116,18 @@ ee.on( 'play', async function ( videoId ) {
       console.log( 'waiting for video' )
 
       const video = document.querySelector( 'video' )
-      if ( video ) {
+      if ( video && video.play && video.pause ) {
         video.pause()
+
+        // hide the pause function so that youtube doesn't pause the video
+        // and ask us to continue if we have been idle for a while
+        if ( !video._pause ) {
+          video._pause = video.pause
+          video.pause = function () {}
+        }
+
+        // expose for easier debugging
+        window.video = video
 
         if ( !video._play ) {
           video._play = video.play
@@ -200,7 +210,7 @@ ee.on( 'play', async function ( videoId ) {
         await page.evaluate( function () {
           const video = document.querySelector( 'video' )
           if ( !video ) return undefined
-          video.pause()
+          video._pause()
         } )
 
         ee.emit( 'video:end' )
