@@ -160,8 +160,10 @@ ee.on( 'play', async function ( videoId ) {
       console.log( ' == video _play == ' )
       console.log( video._play )
 
-      video.currentTime = 0
-      video.muted = false
+      if ( video.muted ) {
+        video.currentTime = 0
+        video.muted = false
+      }
       video._play()
     } )
 
