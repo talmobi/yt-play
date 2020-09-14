@@ -144,9 +144,9 @@ ee.on( 'play', async function ( videoId ) {
     debug( 'video loaded' )
 
     // wait for page title to have loaded to the video title
-    // await page.waitFor( function () {
-    //   return ( document.title.toLowerCase() !== 'youtube' )
-    // } )
+    await page.waitFor( function () {
+      return ( document.title.toLowerCase() !== 'youtube' )
+    } )
 
     debug( 'playing video...' )
     await page.evaluate( function () {
@@ -177,12 +177,14 @@ ee.on( 'play', async function ( videoId ) {
       const data = await page.evaluate( function () {
         console.log( ' === tick === ' )
 
-        const topVideo = document.querySelector( 'video' )
-        if ( !topVideo ) return undefined
+        const mainVideo = window.video
+        if ( !mainVideo ) return undefined
+
+        if ( mainVideo.muted ) mainVideo.muted = false
 
         return {
-          currentTime: topVideo.getCurrentTime(),
-          duration: topVideo.getDuration()
+          currentTime: mainVideo.getCurrentTime(),
+          duration: mainVideo.getDuration()
         }
       } )
 
