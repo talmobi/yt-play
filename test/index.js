@@ -71,8 +71,8 @@ test( 'search and play youtube video', function ( t ) {
           buffer.toLowerCase().indexOf( '0:03 / 6:37' ) >= 0
         ) {
           t.pass( 'duration OK' )
-          nz.kill()
           step = 'finish'
+          nz.kill()
         }
         break
 
