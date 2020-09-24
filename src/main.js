@@ -222,7 +222,7 @@ ee.on( 'play', async function ( videoId ) {
         ee.emit( 'video:end' )
       } else {
         clearTimeout( _tick_timeout )
-        setTimeout( tick, 1000 )
+        _tick_timeout = setTimeout( tick, 1000 )
       }
     }
   } else {
