@@ -202,13 +202,13 @@ ee.on( 'play', async function ( videoId ) {
         text: humanDuration( ct ) +' / ' + humanDuration( dur )
       } )
 
-      if ( ct >= lt ) {
+      if ( ct > 0 && ct >= lt && dur > 0 ) {
         lt = ct
       }
 
       const videoHasEnded = (
         ( ct >= dur && dur > 0 ) ||
-        ( ct < lt ) // currentTime has gone backwards somehow ( maybe next video autoplay )
+        ( lt > 3 && ct < lt ) // currentTime has gone backwards somehow ( maybe next video autoplay )
       )
 
       if ( videoHasEnded ) {
