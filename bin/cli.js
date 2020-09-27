@@ -27,6 +27,15 @@ if ( searchAndPlay ) {
 
 const askAgain = argv.c || argv.continue
 
+if ( argv.V || argv.v || argv.version ) {
+  // print version and exit
+  const pkg = require(
+    _path.join( __dirname, '../package.json' )
+  )
+  console.log( pkg.version )
+  process.exit()
+}
+
 const lockPath = _path.join( __dirname, '.yt-play-cli-lock' )
 _fs.writeFileSync( lockPath, process.pid, { encoding: 'utf8' } )
 
