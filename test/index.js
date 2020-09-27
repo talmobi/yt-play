@@ -70,7 +70,7 @@ test( 'search and play youtube video', function ( t ) {
   const args = []
   const opts = { stdio: [ 'pipe', 'pipe', process.stderr ] }
 
-  spawn = childProcess.spawn( cmd, args, opts )
+  const spawn = childProcess.spawn( cmd, args, opts )
   nz.add( spawn.pid )
 
   // TODO listen for stdout to check if "search for ..." is
