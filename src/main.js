@@ -282,6 +282,20 @@ async function init ()
       return req.abort()
     }
 
+    if ( resourceType === 'other' ) {
+      // block fonts and stuff
+      debug( 'other blocked: ' + url.slice( 0, 55 ) )
+      return req.abort()
+    }
+
+    if ( resourceType === 'script' ) {
+      if ( url.indexOf( 'base.js' ) === -1 ) {
+        // block unnecessary scripts
+        debug( 'script blocked: ' + url.slice( 0, 55 ) )
+        return req.abort()
+      }
+    }
+
     debug( 'url passed: ' + url.slice( 0, 55 ) )
     req.continue()
   } )
