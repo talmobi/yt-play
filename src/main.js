@@ -270,6 +270,8 @@ async function init ()
     const url = req.url
     const resourceType = req.resourceType
 
+    debug( 'resourceType: ' + resourceType )
+
     if ( resourceType === 'image' ) {
       // block images
       debug( 'image blocked: ' + url.slice( 0, 55 ) )
