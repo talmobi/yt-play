@@ -8,3 +8,5 @@ node_modules
 
 # singleton lockfile
 .yt-play-cli-lock
+
+package-lock.json
