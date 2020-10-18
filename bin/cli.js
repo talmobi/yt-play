@@ -37,7 +37,7 @@ if ( argv.V || argv.v || argv.version ) {
 }
 
 const lockPath = _path.join( __dirname, '.yt-play-cli-lock' )
-_fs.writeFileSync( lockPath, process.pid, { encoding: 'utf8' } )
+_fs.writeFileSync( lockPath, String( process.pid ), { encoding: 'utf8' } )
 
 checkLock()
 function checkLock () {
