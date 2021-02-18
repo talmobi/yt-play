@@ -185,8 +185,8 @@ ee.on( 'play', async function ( videoId ) {
         if ( mainVideo.muted ) mainVideo.muted = false
 
         return {
-          currentTime: mainVideo.getCurrentTime(),
-          duration: mainVideo.getDuration()
+          currentTime: mainVideo.currentTime,
+          duration: mainVideo.duration
         }
       } )
 
