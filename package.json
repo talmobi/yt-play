@@ -29,18 +29,18 @@
     "email": "talmo.christian@gmail.com"
   },
   "dependencies": {
-    "ad-block-js": "0.0.2",
-    "cli-color": "~2.0.0",
-    "eeto": "0.0.4",
-    "electron": "~28.0.0",
+    "ad-block-js": "~0.0.2",
+    "cli-color": "~2.0.4",
+    "eeto": "~0.0.4",
+    "electron": "~32.1.2",
     "eleko": "~0.5.2",
-    "minimist": "~1.2.5",
-    "node-fzf": "~0.8.0",
+    "minimist": "~1.2.8",
+    "node-fzf": "~0.13.1",
     "nozombie": "~1.1.0",
-    "yt-search": "~2.10.4"
+    "yt-search": "~2.12.1"
   },
   "devDependencies": {
     "robotjs": "~0.6.0",
-    "tape": "~5.0.1"
+    "tape": "~5.9.0"
   }
 }
