@@ -2,9 +2,6 @@
 const eleko = require( 'eleko' )
 const nozombie = require( 'nozombie' )
 
-const abjs = require( 'ad-block-js' )
-const adBlockClient = abjs.create()
-
 const philipGlassHoursVideoId = 'Wkof3nPK--Y' // testing
 const urlTemplate = 'https://www.youtube.com/watch/$videoId'
 
@@ -23,24 +20,19 @@ Object.keys( process.env ).forEach(
 const fs = require( 'fs' )
 const path = require( 'path' )
 
-// used to block ad urls
-const easyList = fs.readFileSync(
-  path.join( __dirname, '../easylist.txt' ), 'utf8'
-).split( '\n' ).map( function ( t ) {
-  return t.replace( /[\r\n]/g, '' )
+const adBlockClient = require( 'ad-block-js' ).create()
+require( 'fs' ).readFileSync(
+  require( 'path' ).join( __dirname, '../easylist.txt' ), 'utf8'
+)
+.split( /\r?\n/ )
+.forEach( function ( rule ) {
+  adBlockClient.add( rule )
 } )
 
-for ( let i = 0; i < easyList.length; i++ ) {
-  const rule = ( easyList[ i ] || '' ).trim()
-  if ( rule ) {
-    adBlockClient.add( rule )
-  }
-}
-
-function containsAds ( url )
-{
+function containsAds ( url ) {
   return adBlockClient.matches( url )
 }
+
 
 const eeto = require( 'eeto' ) // event emitter
 
@@ -261,7 +253,9 @@ async function init ()
   // the '(Googlebot)' string is added because YouTube will show
   // a warning notification that we are using an "old browser" if
   // it can't detect the "Googlebot" string in the user-agent
-  await page.setUserAgent( 'Mozilla/5.0 (https://github.com/talmobi/yt-play) (Googlebot)' )
+  const userAgent = 'Mozilla/5.0 (https://github.com/talmobi/yt-play)'
+  // await page.setUserAgent( 'Mozilla/5.0 (https://github.com/talmobi/yt-play) (Googlebot)' )
+  await page.setUserAgent( userAgent )
 
   debug( 'user-agent: ' + ( await page.getUserAgent() ) )
 
