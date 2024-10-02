@@ -101,120 +101,159 @@ ee.on( 'play', async function ( videoId ) {
 
     await page.goto( url )
 
+    await page.setAudioMuted( true )
+
     debug( 'page loaded' )
 
-    // wait video to load on the page before playing
-    await page.waitFor( function () {
-      console.log( 'waiting for video' )
-
-      const video = document.querySelector( 'video' )
-      if ( video && video.play && video.pause ) {
-        video.pause()
-
-        // hide the pause function so that youtube doesn't pause the video
-        // and ask us to continue if we have been idle for a while
-        if ( !video._pause ) {
-          video._pause = video.pause
-          video.pause = function () {}
-        }
-
-        // expose for easier debugging
-        window.video = video
-
-        if ( !video._play ) {
-          video._play = video.play
-          video.play = function () {}
-        }
-      }
-
-      return (
-        video &&
-        // video.currentTime >= 0 && video.duration >= 0 &&
-        video.readyState === 4
-      )
-    } )
-    debug( 'video loaded' )
-
-    // wait for page title to have loaded to the video title
-    await page.waitFor( function () {
-      return ( document.title.toLowerCase() !== 'youtube' )
-    } )
-
-    debug( 'playing video...' )
-    await page.evaluate( function () {
-      console.log( 'playing video' )
-
-      const video = document.querySelector( 'video' )
-
-      console.log( ' == video play == ' )
-      console.log( video.play )
-
-      console.log( ' == video _play == ' )
-      console.log( video._play )
-
-      if ( video.muted ) {
-        video.currentTime = 0
-        video.muted = false
-      }
-      video._play()
-    } )
-
-    // last time
-    let lt = 0
-
     debug( 'ticking...' )
+    let TICK_INTERVAL_MS = 333
     tick()
-    // print video current time and duration periodically
     async function tick () {
       debug( ' === tick === ' )
 
-      const data = await page.evaluate( function () {
-        console.log( ' === tick === ' )
+      const r = await page.evaluate( function ( TICK_INTERVAL_MS ) {
+        console.log( 'TICK_INTERVAL_MS: ' + TICK_INTERVAL_MS )
+        const state = window.__state || 'start'
+        if ( !window.__startTime ) window.__startTime = Date.now()
+        const delta = ( Date.now() - window.__startTime )
 
-        const mainVideo = window.video
-        if ( !mainVideo ) return undefined
+        const video = document.querySelector( 'video' )
+        const html5VideoPlayer = document.querySelector('.html5-video-player')
 
-        if ( mainVideo.muted ) mainVideo.muted = false
-
-        return {
-          currentTime: mainVideo.currentTime,
-          duration: mainVideo.duration
+        function videoIsPlaying ( videoEl ) {
+          return (
+            videoEl && videoEl.currentTime > 0 && !videoEl.paused && !videoEl.ended
+          )
         }
-      } )
 
-      // page no longer has a video on it for some reason
-      if ( !data ) return clearTimeout( _tick_timeout )
+        console.log( 'state: ' + state )
+        switch ( state ) {
+          case 'start':
+            if ( video && html5VideoPlayer ) {
+              window.__state = 'check-ads'
+            }
+            return 'video loaded'
+            break;
 
-      const ct = data.currentTime | 0
-      const dur = data.duration | 0
+          case 'check-ads':
+            if ( html5VideoPlayer ) {
+              // detect ads
+              if (
+                html5VideoPlayer.classList.contains( 'ad-showing' ) ||
+                html5VideoPlayer.classList.contains( 'ad-interrupting' )
+              ) {
+                delete window.__no_ads_time
+                // ads are playing
+                console.log( ' >> ads detected << ' )
+                if ( videoIsPlaying( video ) ) {
+                  console.log( ' -> forwarding ad currentTime -> ' )
+                  video.currentTime = ( video.duration - TICK_INTERVAL_MS / 1000 )
+                }
+                return 'trying to skip ads...'
+              } else {
+                console.log( 'no ads detected...' )
+                if ( !window.__no_ads_time ) {
+                  window.__no_ads_time = Date.now()
+                }
+                const d = ( Date.now() - window.__no_ads_time )
+                if ( d > TICK_INTERVAL_MS ) {
+                  console.log( '...ads stopped' )
+                  window.__state = 'ads-stopped'
+                  return '...no more ads'
+                }
+              }
+            } else {
+              console.log( 'error: no html5VideoPlayer found' )
+            }
+            break;
 
-      api.emit( 'duration', {
-        currentTime: ct,
-        duration: dur,
-        text: humanDuration( ct ) +' / ' + humanDuration( dur )
-      } )
+          case 'ads-stopped':
+            // reset the current video and play it
+            if ( video ) {
+              video.pause()
+              video.currentTime = window.__lastCurrentTime || 0
+              video.muted = true
+              video.volume = 0
+              window.__state = 'play'
+              return 'unmute'
+            } else {
+              console.log( 'error: no html5VideoPlayer found' )
+            }
+            break;
 
-      if ( ct > 0 && ct >= lt && dur > 0 ) {
-        lt = ct
+          case 'play':
+            if ( video ) {
+              video.muted = false
+              video.volume = 1
+              video.loop = false
+              video.play()
+              window.__state = 'playing'
+              return 'playing'
+            } else {
+              console.log( 'error: no video found' )
+            }
+            break;
+
+          case 'playing':
+            // detect ads
+            if ( html5VideoPlayer ) {
+              if (
+                html5VideoPlayer.classList.contains( 'ad-showing' ) ||
+                html5VideoPlayer.classList.contains( 'ad-interrupting' )
+              ) {
+                // ads detected
+                console.log( ' >>> ADS DETECTED DURING PLAY <<< ' )
+                // TODO goto secondary ads clearing state
+                window.__state = 'check-ads'
+              } else {
+                if ( video.currentTime > ( window.__lastCurrentTime || 0 ) ) {
+                  window.__lastCurrentTime = video.currentTime
+                }
+                if (
+                  video.currentTime > 0 && !video.ended && video.currentTime >= window.__lastCurrentTime
+                ) {
+                  // keep playing video in case it's interrupted?
+                  return {
+                    currentTime: video.currentTime,
+                    duration: video.duration,
+                  }
+                } else {
+                  console.log( 'video ended?' )
+                  video.pause()
+                  return 'ended'
+                }
+              }
+            }
+            break;
+        }
+
+        return undefined
+      }, TICK_INTERVAL_MS )
+
+      if ( typeof r === 'string' && r ) debug( r )
+
+      if ( r === 'unmute' ) {
+        await page.setAudioMuted( false )
       }
 
-      const videoHasEnded = (
-        ( ct >= dur && dur > 0 ) ||
-        ( lt > 3 && ct < lt ) // currentTime has gone backwards somehow ( maybe next video autoplay )
-      )
+      if ( typeof r === 'object' && r?.duration ) {
+        const ct = r.currentTime | 0
+        const dur = r.duration | 0
 
-      if ( videoHasEnded ) {
-        // stop playing
-        await page.evaluate( function () {
-          const video = document.querySelector( 'video' )
-          if ( !video ) return undefined
-          video._pause()
+        // reduce interval to 1 per sec
+        TICK_INTERVAL_MS = 1000
+
+        api.emit( 'duration', {
+          currentTime: ct,
+          duration: dur,
+          text: humanDuration( ct ) +' / ' + humanDuration( dur )
         } )
+      }
 
+      if ( r === 'ended' ) {
         ee.emit( 'video:end' )
       } else {
-        clearTimeout( _tick_timeout )
-        _tick_timeout = setTimeout( tick, 1000 )
+        setTimeout( tick, TICK_INTERVAL_MS )
       }
     }
   } else {

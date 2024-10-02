@@ -33,7 +33,7 @@
     "cli-color": "~2.0.4",
     "eeto": "~0.0.4",
     "electron": "~32.1.2",
-    "eleko": "~0.5.2",
+    "eleko": "~0.6.0",
     "minimist": "~1.2.8",
     "node-fzf": "~0.13.1",
     "nozombie": "~1.1.0",
