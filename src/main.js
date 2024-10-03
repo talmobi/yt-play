@@ -231,9 +231,16 @@ ee.on( 'play', async function ( videoId ) {
                 if ( video.currentTime > ( window.__lastCurrentTime || 0 ) ) {
                   window.__lastCurrentTime = video.currentTime
                 }
+                if ( video.currentTime === 0 && !window.__lastCurrentTime && video.duration > 0 ) {
+                  // video stuck on starting position for some reason, play it
+                  video.play()
+                }
                 if (
-                  video.currentTime > 0 && !video.ended && video.currentTime >= window.__lastCurrentTime
-                ) {
+                    ( video.duration > 0 && !video.ended ) && (
+                      ( video.currentTime === 0 && !window.__lastCurrentTime ) ||
+                      ( video.currentTime >= window.__lastCurrentTime )
+                    )
+                  ) {
                   // keep playing video in case it's interrupted?
                   return {
                     currentTime: video.currentTime,
@@ -245,6 +252,7 @@ ee.on( 'play', async function ( videoId ) {
                   console.log('video.duration: ' + video.duration)
                   console.log( 'video ended?' )
                   video.pause()
+                  window.__state = 'ended'
                   return 'ended'
                 }
               }
