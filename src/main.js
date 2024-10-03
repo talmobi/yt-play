@@ -191,6 +191,7 @@ ee.on( 'play', async function ( videoId ) {
             // reset the current video and play it
             if ( video ) {
               video.pause()
+              console.log(' pausing video (ads-stopped)')
               video.currentTime = window.__lastCurrentTime || 0
               video.muted = true
               video.volume = 0
@@ -207,6 +208,7 @@ ee.on( 'play', async function ( videoId ) {
               video.volume = 1
               video.loop = false
               video.play()
+              console.log(' playing video (play)')
               window.__state = 'playing'
               return 'playing'
             } else {
@@ -238,6 +240,9 @@ ee.on( 'play', async function ( videoId ) {
                     duration: video.duration,
                   }
                 } else {
+                  console.log('video.currentTime: ' + video.currentTime)
+                  console.log('window.__lastCurrentTime: ' + window.__lastCurrentTime)
+                  console.log('video.duration: ' + video.duration)
                   console.log( 'video ended?' )
                   video.pause()
                   return 'ended'
