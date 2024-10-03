@@ -263,7 +263,10 @@ ee.on( 'play', async function ( videoId ) {
         return undefined
       }, TICK_INTERVAL_MS )
 
-      if ( typeof r === 'string' && r ) debug( r )
+      if ( typeof r === 'string' && r ) {
+        api.emit( 'status', r )
+        debug( r )
+      }
 
       if ( r === 'unmute' ) {
         await page.setAudioMuted( false )
