@@ -126,6 +126,26 @@ ee.on( 'play', async function ( videoId ) {
           )
         }
 
+        /*
+        video.oncanplay = function ( evt ) {
+          console.log( ' === ONCANPLAY === ' )
+          switch ( window.__state ) {
+            case 'play':
+            case 'playing':
+              console.log( 'window.__state: ' + window.__state )
+              console.log( ' === ONCANPLAY >>> PLAY! === ' )
+              // video.play()
+              break;
+          }
+        }
+
+        video.onplay = function ( evt ) {
+          console.log( ' === ON PLAY === ' )
+          console.log( 'window.__state: ' + window.__state )
+          console.log( ' === ======= === ' )
+        }
+        */
+
         console.log( 'state: ' + state )
         switch ( state ) {
           case 'start':
