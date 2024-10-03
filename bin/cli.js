@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// print/render to the terminal
+const _clc = require( 'cli-color' )
+
 const _path = require( 'path' )
 const _fs = require( 'fs' )
 
@@ -7,9 +10,6 @@ const _yts = require( 'yt-search' )
 const _nfzf = require( 'node-fzf' )
 
 const ytp = require( '../src/main.js' )
-
-// print video duration
-const _clc = require( 'cli-color' )
 
 const argv = require( 'minimist' )( process.argv.slice( 2 ) )
 
@@ -68,9 +68,35 @@ function play ( videoId )
   ytp.play( videoId )
 }
 
+function playSong ( song ) {
+  const { videoId, url, title } = song
+
+  console.log( 'id: ' + videoId ) && _printedLines++
+  url && console.log( 'url: ' + url ) && _printedLines++
+  title && console.log( 'title: ' + title ) && _printedLines++
+
+  ytp.play( videoId )
+
+  const offStatus = ytp.on( 'status', onStatus )
+  const offDuration = ytp.on( 'duration', onDuration )
+  ytp.once( 'end', function () {
+    offStatus()
+    offDuration()
+  } )
+  function onStatus ( evt ) {
+    process.stdout.write( _clc.erase.line )
+    process.stdout.write( _clc.move( -process.stdout.columns ) )
+    process.stdout.write( evt )
+  }
+  function onDuration ( evt ) {
+    process.stdout.write( _clc.erase.line )
+    process.stdout.write( _clc.move( -process.stdout.columns ) )
+    process.stdout.write( evt.text )
+  }
+}
+
 if ( videoId ) {
-  console.log( 'play video id: ' + videoId )
-  play( videoId )
+  playSong( { videoId: videoId } )
 } else if ( searchAndPlay ) {
   console.log( 'search and play: ' + searchAndPlay )
   _yts( searchAndPlay, function ( err, r ) {
@@ -81,23 +107,7 @@ if ( videoId ) {
 
     const song = videos[ 0 ]
 
-    console.log( 'playing   : ' + song.videoId )
-    console.log( 'url       : ' + song.url )
-
-    console.log( ' ------------------ ' )
-    console.log( song.title )
-
-    play( song.videoId )
-
-    const off = ytp.on( 'duration', onDuration )
-    ytp.once( 'end', function () {
-      off()
-    } )
-    function onDuration ( evt ) {
-      process.stdout.write( _clc.erase.line )
-      process.stdout.write( _clc.move( -process.stdout.columns ) )
-      process.stdout.write( evt.text )
-    }
+    playSong( song )
 
     // ask again once current video has stopped playing
     ytp.once( 'end', function onEnd () {
@@ -174,23 +184,7 @@ function ask () {
 
         const song = videos[ ind ]
 
-        console.log( 'playing   : ' + song.videoId )
-        console.log( 'url       : ' + song.url )
-
-        console.log( ' ------------------ ' )
-        console.log( song.title )
-
-        play( song.videoId )
-
-        const off = ytp.on( 'duration', onDuration )
-        ytp.once( 'end', function () {
-          off()
-        } )
-        function onDuration ( evt ) {
-          process.stdout.write( _clc.erase.line )
-          process.stdout.write( _clc.move( -process.stdout.columns ) )
-          process.stdout.write( evt.text )
-        }
+        playSong( song )
 
         // ask again once current video has stopped playing
         ytp.once( 'end', function onEnd () {
