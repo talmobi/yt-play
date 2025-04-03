@@ -8,9 +8,6 @@ const _nfzf = require( 'node-fzf' )
 
 const ytp = require( '../src/main.js' )
 
-// print video duration
-const _clc = require( 'cli-color' )
-
 const argv = require( 'minimist' )( process.argv.slice( 2 ) )
 
 let videoId = argv.v || argv.video
@@ -68,6 +65,12 @@ function play ( videoId )
   ytp.play( videoId )
 }
 
+// https://github.com/medikoo/cli-color/blob/b9080d464c76930b3cbfb7f281999fcc26f39fb1/erase.js#L7
+const eraseLine = '\x1b[2K'
+
+// https://github.com/medikoo/cli-color/blob/b9080d464c76930b3cbfb7f281999fcc26f39fb1/move.js#L8-L13
+const moveLeft = (num) => num ? '\x1b[' + num + 'D' : ''
+
 if ( videoId ) {
   console.log( 'play video id: ' + videoId )
   play( videoId )
@@ -94,8 +97,8 @@ if ( videoId ) {
       off()
     } )
     function onDuration ( evt ) {
-      process.stdout.write( _clc.erase.line )
-      process.stdout.write( _clc.move( -process.stdout.columns ) )
+      process.stdout.write( eraseLine )
+      process.stdout.write( moveLeft( process.stdout.columns ) )
       process.stdout.write( evt.text )
     }
 
@@ -187,8 +190,8 @@ function ask () {
           off()
         } )
         function onDuration ( evt ) {
-          process.stdout.write( _clc.erase.line )
-          process.stdout.write( _clc.move( -process.stdout.columns ) )
+          process.stdout.write( eraseLine )
+          process.stdout.write( moveLeft( process.stdout.columns ) )
           process.stdout.write( evt.text )
         }
 
