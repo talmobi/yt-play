@@ -56,7 +56,6 @@ let playasap = undefined
 api.exit = async function exit () {
   const browser = _browser
   if ( browser ) await browser.close()
-  clearTimeout( t )
   finish()
 
   function finish () {
@@ -64,12 +63,15 @@ api.exit = async function exit () {
     finish.done = true
 
     init.init = false
+    _browser = undefined
+    _page = undefined
+    debug( ' === yt-play FINISHED playing === ' )
 
     api.emit( 'end' )
   }
 }
 
-ee.once( 'page-ready', function () {
+ee.on( 'page-ready', function () {
   debug( ' === PAGE READY === ' )
 
   if ( playasap ) {
@@ -89,6 +91,37 @@ ee.on( 'video:end', async function () {
   api.emit( 'end' )
 } )
 
+// attach nodejs/api userland event handlers
+const offSeek = api.on('seek', async function ( seconds ) {
+  debug( 'seek request received, seconds: ' + seconds )
+
+  const page = _page
+  if ( !page ) return console.log( 'no page setup' )
+  try {
+    const r = await page.evaluate( function ( seconds ) {
+      console.log( 'seek: ' + seconds )
+      switch ( window.__state ) {
+        case 'play':
+        case 'playing':
+          const video = document.querySelector( 'video' )
+          if ( video ) {
+            let newTime = Math.min( seconds, video.duration - 1 )
+            if ( newTime < 0 ) newTime = 0
+            console.log('newTime: ' + newTime )
+            video.currentTime = newTime
+            return 'success'
+          }
+          break
+      }
+      return 'err: no video playing?'
+    }, seconds )
+    console.log('seek status: ' + r)
+  } catch ( err ) {
+    console.log( err )
+  }
+} )
+
+
 let _tick_timeout
 ee.on( 'play', async function ( videoId ) {
   clearTimeout( _tick_timeout )
@@ -100,13 +133,41 @@ ee.on( 'play', async function ( videoId ) {
     const url = urlTemplate.replace( '$videoId', videoId )
 
     await page.goto( url )
-
-    await page.setAudioMuted( true )
-
     debug( 'page loaded' )
 
-    debug( 'ticking...' )
+    // await page.waitFor( function () {
+    //   document.title !== 'youtube'
+    // } )
+    // debug('title changed')
+
+    await page.waitFor( function () {
+      const video = document.querySelector( 'video' )
+      return !!video
+    } )
+
+    await page.setAudioMuted( true )
+    debug( 'electron muted' )
+
+    await page.waitFor( function () {
+      const video = document.querySelector( 'video' )
+      const html5VideoPlayer = document.querySelector( '.html5-video-player' )
+      if ( video ) video.muted = true
+      return ( video && html5VideoPlayer )
+    } )
+    debug('video and player found/loaded')
+
+    const metadata = await page.evaluate( function () {
+      const title = document.querySelector('title').textContent.trim()
+      const url = document.location.href
+      return { url, title }
+    } )
+    debug('video url: ' + metadata.url)
+    debug('video title: ' + metadata.title)
+    api.emit( 'metadata', metadata )
+
+    debug( 'starting to tick...' )
     let TICK_INTERVAL_MS = 333
+
     tick()
     async function tick () {
       debug( ' === tick === ' )
@@ -251,7 +312,7 @@ ee.on( 'play', async function ( videoId ) {
                   console.log('window.__lastCurrentTime: ' + window.__lastCurrentTime)
                   console.log('video.duration: ' + video.duration)
                   console.log( 'video ended?' )
-                  video.pause()
+                  // video.pause()
                   window.__state = 'ended'
                   return 'ended'
                 }
@@ -287,7 +348,9 @@ ee.on( 'play', async function ( videoId ) {
       }
 
       if ( r === 'ended' ) {
-        ee.emit( 'video:end' )
+        setTimeout( function () {
+          ee.emit( 'video:end' )
+        }, 1000 )
       } else {
         setTimeout( tick, TICK_INTERVAL_MS )
       }
@@ -301,7 +364,10 @@ ee.on( 'play', async function ( videoId ) {
 // init browser
 async function init ()
 {
+  debug( ' === in init() fn === ' )
+
   if ( init.init ) return
+  debug( ' === INITIALIZING === ' )
   init.init = true
 
   const browser = await eleko.launch()
@@ -312,7 +378,6 @@ async function init ()
 
   browser.on( 'exit', async function ( code ) {
     debug( 'browser exited, code: ' + code )
-    process.exit( code )
   } )
 
   debug( 'creating new page...' )
@@ -341,9 +406,26 @@ async function init ()
 
     debug( 'resourceType: ' + resourceType )
 
+    return req.continue()
+
     if ( resourceType === 'image' ) {
       // block images
       debug( 'image blocked: ' + url.slice( 0, 55 ) )
+      // return req.abort()
+    }
+
+    if ( url.indexOf('/stats/') >= 0 ) {
+      debug( 'blocking stats: ' + url.slice( 0, 55 ) )
+      // return req.abort()
+    }
+
+    if ( url.indexOf('tracking') >= 0 ) {
+      debug( 'blocking tracking: ' + url.slice( 0, 55 ) )
+      return req.abort()
+    }
+
+    if ( url.indexOf('/log_event') >= 0 ) {
+      debug( 'blocking log_event: ' + url.slice( 0, 55 ) )
       return req.abort()
     }
 
@@ -356,16 +438,16 @@ async function init ()
     if ( resourceType === 'other' ) {
       // block fonts and stuff
       debug( 'other blocked: ' + url.slice( 0, 55 ) )
-      return req.abort()
+      // return req.abort()
     }
 
-    if ( resourceType === 'script' ) {
-      if ( url.indexOf( 'base.js' ) === -1 ) {
-        // block unnecessary scripts
-        debug( 'script blocked: ' + url.slice( 0, 55 ) )
-        return req.abort()
-      }
-    }
+    // if ( resourceType === 'script' ) {
+    //   if ( url.indexOf( 'base.js' ) === -1 ) {
+    //     // block unnecessary scripts
+    //     debug( 'script blocked: ' + url.slice( 0, 55 ) )
+    //     return req.abort()
+    //   }
+    // }
 
     debug( 'url passed: ' + url.slice( 0, 55 ) )
     req.continue()

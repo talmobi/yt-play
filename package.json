@@ -34,9 +34,12 @@
     "eeto": "~0.0.4",
     "electron": "~32.1.2",
     "eleko": "~0.6.0",
+    "keypress": "~0.2.1",
     "minimist": "~1.2.8",
     "node-fzf": "~0.13.1",
     "nozombie": "~1.1.0",
+    "restore-cursor": "~3.1.0",
+    "window-size": "~1.1.1",
     "yt-search": "~2.12.1"
   },
   "devDependencies": {
