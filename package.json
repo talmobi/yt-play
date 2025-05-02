@@ -32,7 +32,7 @@
     "ad-block-js": "~0.0.2",
     "cli-color": "~2.0.4",
     "eeto": "~0.0.4",
-    "electron": "~32.1.2",
+    "electron": "~36.1.0",
     "eleko": "~0.6.0",
     "keypress": "~0.2.1",
     "minimist": "~1.2.8",
